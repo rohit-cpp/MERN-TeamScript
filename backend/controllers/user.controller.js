@@ -113,8 +113,7 @@ export const updateProfile = async (req, res) => {
     const file = req.file;
 
     const userId = req.id; // middleware
-    let user = await User.findById(userId);
-    //   .populate("teams", "name");
+    let user = await User.findById(userId).populate("teams", "name");
     if (!user) {
       return res.status(400).json({
         message: "User not found",
