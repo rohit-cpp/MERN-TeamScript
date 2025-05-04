@@ -18,8 +18,8 @@ const suggestionSchema = new mongoose.Schema(
       trim: true,
     },
     position: {
-      startIndex: { type: Number, required: true },
-      endIndex: { type: Number, required: true },
+      startIndex: { type: Number },
+      endIndex: { type: Number },
     },
     status: {
       type: String,

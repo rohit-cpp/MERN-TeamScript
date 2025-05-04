@@ -7,6 +7,7 @@ import userRoute from "./routes/user.route.js";
 import teamRoute from "./routes/team.route.js";
 import documentRoute from "./routes/document.route.js";
 import versionRoute from "./routes/version.route.js";
+import suggestionRoute from "./routes/suggestion.route.js";
 dotenv.config({});
 
 const app = express();
@@ -35,6 +36,7 @@ app.use("/api/user", userRoute);
 app.use("/api/team", teamRoute);
 app.use("/api/document", documentRoute);
 app.use("/api/version", versionRoute);
+app.use("/api/suggestion", suggestionRoute);
 
 app.listen(PORT, () => {
   connectDB();
