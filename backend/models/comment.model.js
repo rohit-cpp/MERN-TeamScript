@@ -7,7 +7,7 @@ const commentSchema = new mongoose.Schema(
       ref: "Document",
       required: true,
     },
-    author: {
+    commentedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -16,10 +16,6 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-    },
-    position: {
-      startIndex: { type: Number },
-      endIndex: { type: Number },
     },
   },
   { timestamps: true }
