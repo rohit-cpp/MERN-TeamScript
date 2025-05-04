@@ -95,7 +95,7 @@ export const getTeamById = async (req, res) => {
   }
 };
 
-//  add member to the team (admin)
+// add member to the team (admin)
 export const addMemberToTeam = async (req, res) => {
   try {
     const { teamId, userIdToAdd } = req.body;
