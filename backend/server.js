@@ -6,6 +6,7 @@ import connectDB from "./utils/db.js";
 import userRoute from "./routes/user.route.js";
 import teamRoute from "./routes/team.route.js";
 import documentRoute from "./routes/document.route.js";
+import versionRoute from "./routes/version.route.js";
 dotenv.config({});
 
 const app = express();
@@ -33,6 +34,7 @@ const PORT = process.env.PORT || 3000;
 app.use("/api/user", userRoute);
 app.use("/api/team", teamRoute);
 app.use("/api/document", documentRoute);
+app.use("/api/version", versionRoute);
 
 app.listen(PORT, () => {
   connectDB();

@@ -71,8 +71,9 @@ export const getTeamById = async (req, res) => {
   try {
     const teamId = req.params.id;
 
-    const team = await Team.findById(teamId).populate("members");
-    //   .populate("documents");
+    const team = await Team.findById(teamId)
+      .populate("members")
+      .populate("documents");
 
     if (!team) {
       return res.status(404).json({
