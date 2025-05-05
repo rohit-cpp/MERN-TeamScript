@@ -1,11 +1,14 @@
 import React from "react";
 import Login from "./pages/auth/login";
+import Navbar from "./components/shared/Navbar";
+import Home from "./pages/HomePage/Home";
 
 const App = () => {
   return (
     <div>
       <div>
-        <Login />
+        <Home />
+        {/* <Login /> */}
       </div>
     </div>
   );
