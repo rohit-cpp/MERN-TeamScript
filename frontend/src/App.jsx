@@ -3,6 +3,7 @@ import Login from "./pages/auth/login";
 import Navbar from "./components/shared/Navbar";
 import Home from "./pages/HomePage/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Team from "./pages/teamPage/team";
 
 const appRouter = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/team",
+    element: <Team />,
   },
 ]);
 

@@ -11,23 +11,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Link, useNavigate } from "react-router-dom";
 
+// const navigate = useNavigate();
 const Navbar = () => {
-  const user = false;
+  const user = true;
   return (
     <div>
-      <nav className="flex justify-between items-center px-18">
-        <div className="flex items-center">
-          <img src="logo.png" alt="logo" className="w-18" />
+      <nav className="flex justify-between items-center px-18 shadow-lg shadow-gray-300 fixed top-0 w-full z-20">
+        <div className="flex items-center justify-center gap-2 p-4">
+          <img src="logonew.png" alt="logo" className="w-10" />
           <h1 className="text-3xl font-bold text-orange-600">TeamScript</h1>
         </div>
-        <div className="hidden md:flex gap-6 items-center">
-          <a href="#features" className="hover:underline">
-            Features
-          </a>
-          <a href="#team" className="hover:underline">
+        <div className="hidden md:flex gap-6 items-center ">
+          <Link className="cursor-pointer hover:underline">Features</Link>
+          <Link to={"/team"} className="cursor-pointer hover:underline">
             Team
-          </a>
+          </Link>
           {/* <a href="#login" className="hover:underline">
           Login
         </a> */}
@@ -55,32 +55,26 @@ const Navbar = () => {
             ) : (
               <>
                 {" "}
-                <div className="flex flex-row gap-6 ">
-                  <a href="#signup" className="hover:underline">
-                    SignUp
-                  </a>
-                  <a href="#login" className="hover:underline">
-                    Login
-                  </a>
+                <div className="flex flex-row gap-6">
+                  <Link className="hover:underline">SignUp</Link>
+                  <Link className="hover:underline">Login</Link>
                 </div>
               </>
             )}
           </div>
         </div>
       </nav>
-      <nav className="fixed right-0 top-7 px-7">
+      <nav className="fixed right-0 top-7 px-7 z-20">
         <Sheet>
           <SheetTrigger className="md:hidden">
             <Menu />
           </SheetTrigger>
           <SheetContent>
             <div className="flex flex-col gap-4 mt-10 px-5">
-              <a href="#features" className="hover:underline">
-                Features
-              </a>
-              <a href="#team" className="hover:underline">
+              <Link className="hover:underline">Features</Link>
+              <Link to={"/team"} className="hover:underline">
                 Team
-              </a>
+              </Link>
               {/* <a href="#login">Login</a> */}
               <div>
                 {" "}
@@ -100,12 +94,8 @@ const Navbar = () => {
                   <>
                     {" "}
                     <div className="flex flex-col gap-4 ">
-                      <a href="#signup" className="hover:underline">
-                        SignUp
-                      </a>
-                      <a href="#login" className="hover:underline">
-                        Login
-                      </a>
+                      <Link className="hover:underline">SignUp</Link>
+                      <Link className="hover:underline">Login</Link>
                     </div>
                   </>
                 )}

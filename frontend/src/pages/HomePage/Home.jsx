@@ -4,15 +4,25 @@ import HeroSection from "./HeroSection";
 import FeatureSection from "./FeatureSection";
 import TeamSection from "./TeamSection";
 import Footer from "@/components/shared/Footer";
+import WhySection from "./WhySection";
+import ProblemsWeSolve from "./ProblemWeSolveSection";
+import AIFeatures from "./AiFeaturesSection";
+import AccordionSection from "./AccordianSection";
 
 const Home = () => {
   return (
     <div>
       <Navbar />
-      <HeroSection />
-      <FeatureSection />
-      <TeamSection />
-      <Footer />
+      <div className="mt-20">
+        <HeroSection />
+        <WhySection />
+        <ProblemsWeSolve />
+        <AIFeatures />
+        {/* <FeatureSection /> */}
+        {/* <TeamSection /> */}
+        <AccordionSection />
+        <Footer />
+      </div>
     </div>
   );
 };
