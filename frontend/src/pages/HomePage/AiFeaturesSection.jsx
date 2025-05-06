@@ -32,7 +32,7 @@ const AIFeatures = () => {
     <section className="w-full bg-white py-20 px-6 md:px-12">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-5xl font-bold mb-6 text-orange-600">
-          ✨ Smart Collaboration Powered by AI
+          Smart Collaboration Powered by AI
         </h2>
         <p className="text-gray-600 text-lg mb-12">
           TeamScript uses AI to supercharge your productivity, clarity, and team

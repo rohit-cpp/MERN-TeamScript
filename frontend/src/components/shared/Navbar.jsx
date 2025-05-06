@@ -13,21 +13,22 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Link, useNavigate } from "react-router-dom";
 
-// const navigate = useNavigate();
 const Navbar = () => {
+  // const navigate = useNavigate();
   const user = true;
   return (
     <div>
       <nav className="flex justify-between items-center px-18 shadow-lg shadow-gray-300 fixed top-0 w-full z-20">
-        <div className="flex items-center justify-center gap-2 p-4">
-          <img src="logonew.png" alt="logo" className="w-10" />
+        <div className="flex items-center justify-center mr-4 p-4">
+          <img src="/public/logonew.png" alt="logo" className="w-10" />
           <h1 className="text-3xl font-bold text-orange-600">TeamScript</h1>
         </div>
         <div className="hidden md:flex gap-6 items-center ">
-          <Link className="cursor-pointer hover:underline">Features</Link>
-          <Link to={"/team"} className="cursor-pointer hover:underline">
-            Team
+          <Link to="/" className="cursor-pointer hover:underline">
+            Home
           </Link>
+          <Link className="cursor-pointer hover:underline">Features</Link>
+          <Link className="cursor-pointer hover:underline">Team</Link>
           {/* <a href="#login" className="hover:underline">
           Login
         </a> */}
@@ -45,10 +46,13 @@ const Navbar = () => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Billing</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/admin/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem>Team</DropdownMenuItem>
-                  <DropdownMenuItem>Subscription</DropdownMenuItem>
+                  <DropdownMenuItem>Editor</DropdownMenuItem>
+                  <DropdownMenuItem>Verions</DropdownMenuItem>
+                  <DropdownMenuItem>Suggestion</DropdownMenuItem>
                   <DropdownMenuItem>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

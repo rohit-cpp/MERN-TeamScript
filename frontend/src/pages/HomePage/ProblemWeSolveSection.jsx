@@ -11,7 +11,7 @@ const problems = [
 const ProblemsWeSolve = () => {
   return (
     <section className="w-full px-4 md:px-10 py-16 bg-muted">
-      <h2 className="text-3xl md:text-5xl font-bold text-center text-orange-600 mb-10">
+      <h2 className="text-5xl md:text-5xl font-bold text-center text-orange-600 mb-10">
         Problems We Solve
         <p className="text-lg font-normal mt-2 text-gray-600">
           Problem people face on ther websites

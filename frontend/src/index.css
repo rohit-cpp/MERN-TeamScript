@@ -4,6 +4,11 @@
 @import "tw-animate-css";
 @import "keen-slider/keen-slider.min.css";
 
+[data-vaul-drawer][data-vaul-drawer-direction="bottom"]::after {
+  height: auto !important;
+  top: auto !important;
+}
+
 * {
   font-family: "Outfit", sans-serif;
 }
