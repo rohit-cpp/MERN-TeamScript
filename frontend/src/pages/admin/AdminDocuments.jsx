@@ -49,7 +49,9 @@ import {
 import Navbar from "@/components/shared/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Link, useNavigate } from "react-router-dom";
 const AdminDocuments = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -110,7 +112,9 @@ const AdminDocuments = () => {
                       <Button size="sm">...</Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link to={"/editor"}>Edit</Link>
+                      </DropdownMenuItem>
                       <DropdownMenuItem>Assign</DropdownMenuItem>
                       <DropdownMenuItem>Delete</DropdownMenuItem>
                     </DropdownMenuContent>

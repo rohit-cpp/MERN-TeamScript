@@ -1,0 +1,55 @@
+// store/api/teamApi.js
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+const TEAM_API = "http://localhost:8000/api/team/";
+
+export const teamApi = createApi({
+  reducerPath: "teamApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: TEAM_API,
+    credentials: "include",
+  }),
+  tagTypes: ["Team"],
+  endpoints: (builder) => ({
+    // POST /team/create
+    createTeam: builder.mutation({
+      query: (name) => ({
+        url: "create",
+        method: "POST",
+        body: { name },
+      }),
+      invalidatesTags: ["Team"],
+    }),
+
+    // GET /team/my-teams
+    getMyTeams: builder.query({
+      query: () => "my-teams",
+      providesTags: ["Team"],
+    }),
+
+    // GET /team/:id
+    getTeamById: builder.query({
+      query: (id) => `${id}`,
+      providesTags: (result, error, id) => [{ type: "Team", id }],
+    }),
+
+    // POST /team/add-member
+    addMemberToTeam: builder.mutation({
+      query: ({ teamId, userIdToAdd }) => ({
+        url: "add-member",
+        method: "POST",
+        body: { teamId, userIdToAdd },
+      }),
+      invalidatesTags: (result, error, { teamId }) => [
+        { type: "Team", id: teamId },
+      ],
+    }),
+  }),
+});
+
+export const {
+  useCreateTeamMutation,
+  useGetMyTeamsQuery,
+  useGetTeamByIdQuery,
+  useAddMemberToTeamMutation,
+} = teamApi;

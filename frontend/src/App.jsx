@@ -10,6 +10,13 @@ import AdminAi from "./pages/admin/AdminAi";
 import AdminRecent from "./pages/admin/AdminRecent";
 import AdminComment from "./pages/admin/AdminComment";
 import Profile from "./pages/profilePage/Profile";
+import DocumentEditor from "./pages/documentPage/DocumentEditor";
+import TeamPage from "./pages/teamPage/team";
+import TeamDetails from "./pages/teamPage/AllTeamDetails";
+import CreateTeam from "./pages/teamPage/CreateTeamFormSection";
+import MyTeams from "./pages/teamPage/AllTeamDetails";
+import AddMemberToTeam from "./pages/teamPage/AddMember";
+import SingleTeamDetails from "./pages/teamPage/SingleTeamDetails";
 
 const appRouter = createBrowserRouter([
   {
@@ -23,6 +30,35 @@ const appRouter = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/teams",
+    children: [
+      {
+        index: true,
+        element: <TeamPage />,
+      },
+      {
+        path: "create",
+        element: <CreateTeam />,
+      },
+      {
+        path: "my-teams",
+        element: <MyTeams />,
+      },
+      {
+        path: ":id",
+        element: <SingleTeamDetails />,
+      },
+      {
+        path: "add-member",
+        element: <AddMemberToTeam />,
+      },
+    ],
+  },
+  {
+    path: "/editor",
+    element: <DocumentEditor />,
   },
   {
     path: "/admin/dashboard",
@@ -45,6 +81,7 @@ const appRouter = createBrowserRouter([
         path: "documents",
         element: <AdminDocuments />,
       },
+
       {
         path: "users",
         element: <AdminUsers />,

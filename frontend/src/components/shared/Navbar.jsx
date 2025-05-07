@@ -12,13 +12,28 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoadUserQuery } from "@/store/api/authApi";
+import { useLoadUserQuery, useLogoutUserMutation } from "@/store/api/authApi";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const { data, isLoading } = useLoadUserQuery();
-  // const navigate = useNavigate();
+
   // const user = data;
-  const { user } = data;
+  const user = data && data?.user;
+  const [logoutUser, { data: logoutData, isSuccess }] = useLogoutUserMutation();
+  const navigate = useNavigate();
+
+  const logoutHandler = async () => {
+    await logoutUser();
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(data.message || "User is logged out");
+      navigate("/login");
+    }
+  }, [isSuccess]);
   return (
     <div>
       <nav className="flex justify-between items-center px-18 shadow-lg shadow-gray-300 fixed top-0 w-full z-20">
@@ -31,7 +46,9 @@ const Navbar = () => {
             Home
           </Link>
           <Link className="cursor-pointer hover:underline">Features</Link>
-          <Link className="cursor-pointer hover:underline">Team</Link>
+          <Link to="/teams" className="cursor-pointer hover:underline">
+            Team
+          </Link>
           {/* <a href="#login" className="hover:underline">
           Login
         </a> */}
@@ -55,11 +72,16 @@ const Navbar = () => {
                   <DropdownMenuItem>
                     <Link to="/profile">Profile</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>Team</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    {" "}
+                    <Link to="/teams">Team</Link>{" "}
+                  </DropdownMenuItem>
                   <DropdownMenuItem>Editor</DropdownMenuItem>
                   <DropdownMenuItem>Verions</DropdownMenuItem>
                   <DropdownMenuItem>Suggestion</DropdownMenuItem>
-                  <DropdownMenuItem>Logout</DropdownMenuItem>
+                  <DropdownMenuItem onClick={logoutHandler}>
+                    Logout
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (

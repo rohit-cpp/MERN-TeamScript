@@ -1,6 +1,6 @@
 import Navbar from "@/components/shared/Navbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,11 +18,17 @@ import {
   useLoadUserQuery,
   useUpdateProfileMutation,
 } from "@/store/api/authApi";
+import { useGetMyTeamsQuery } from "@/store/api/teamApi";
 import Team from "@/components/shared/Team";
 import { toast } from "sonner";
 
 const Profile = () => {
-  const { data, isLoading } = useLoadUserQuery();
+  const {
+    data: userData,
+    isLoading: loadingUser,
+    refetch,
+  } = useLoadUserQuery();
+  const { data: myTeamsData, isLoading: loadingTeams } = useGetMyTeamsQuery();
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
   const [form, setForm] = useState({ name: "", bio: "" });
   const [file, setFile] = useState(null);
@@ -38,7 +44,6 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     if (form.name) formData.append("name", form.name);
     if (form.bio) formData.append("bio", form.bio);
@@ -46,21 +51,37 @@ const Profile = () => {
 
     try {
       await updateProfile(formData).unwrap();
-      toast.success("profile updated successfully");
+      refetch();
+      toast.success("Profile updated successfully");
     } catch (err) {
       console.error(err);
       toast.error("Failed to update profile");
     }
   };
 
-  if (isLoading)
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  if (loadingUser || loadingTeams)
     return (
       <div className="mt-30 text-cyan-700 text-5xl font-semibold text-center my-10">
         Loading Profile...
       </div>
     );
 
-  const { user } = data;
+  const { user } = userData;
+  const userTeams = user?.teams || [];
+  const fetchedTeams = myTeamsData?.teams || [];
+
+  // Merge and deduplicate by team _id
+  const allTeamsMap = new Map();
+  [...userTeams, ...fetchedTeams].forEach((team) => {
+    if (team && team._id) {
+      allTeamsMap.set(team._id, team);
+    }
+  });
+  const uniqueTeams = Array.from(allTeamsMap.values());
 
   return (
     <div>
@@ -146,7 +167,7 @@ const Profile = () => {
                     <Button type="submit" disabled={isUpdating}>
                       {isUpdating && (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      )}{" "}
+                      )}
                       Save Changes
                     </Button>
                   </DialogFooter>
@@ -158,10 +179,10 @@ const Profile = () => {
 
         <div>
           <h2 className="text-lg font-semibold mb-2">Your Teams</h2>
-          {user?.teams?.length ? (
+          {uniqueTeams.length ? (
             <div className="space-y-4">
-              {user.teams.map((team, idx) => (
-                <Team key={team._id || idx} team={team} />
+              {uniqueTeams.map((team) => (
+                <Team key={team._id} team={team} />
               ))}
             </div>
           ) : (
