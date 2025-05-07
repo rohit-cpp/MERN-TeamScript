@@ -8,6 +8,8 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminSuggestions from "./pages/admin/AdminSuggestions";
 import AdminAi from "./pages/admin/AdminAi";
 import AdminRecent from "./pages/admin/AdminRecent";
+import AdminComment from "./pages/admin/AdminComment";
+import Profile from "./pages/profilePage/Profile";
 
 const appRouter = createBrowserRouter([
   {
@@ -17,6 +19,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
   {
     path: "/admin/dashboard",
@@ -54,6 +60,10 @@ const appRouter = createBrowserRouter([
       {
         path: "recent",
         element: <AdminRecent />,
+      },
+      {
+        path: "comments",
+        element: <AdminComment />,
       },
     ],
   },

@@ -12,10 +12,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Link, useNavigate } from "react-router-dom";
+import { useLoadUserQuery } from "@/store/api/authApi";
 
 const Navbar = () => {
+  const { data, isLoading } = useLoadUserQuery();
   // const navigate = useNavigate();
-  const user = true;
+  // const user = data;
+  const { user } = data;
   return (
     <div>
       <nav className="flex justify-between items-center px-18 shadow-lg shadow-gray-300 fixed top-0 w-full z-20">
@@ -38,8 +41,8 @@ const Navbar = () => {
               <DropdownMenu>
                 {/* <DropdownMenuTrigger>Open</DropdownMenuTrigger> */}
                 <DropdownMenuTrigger>
-                  <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
+                  <Avatar className="cursor-pointer">
+                    <AvatarImage src={user?.profile?.profilePhoto} />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -48,6 +51,9 @@ const Navbar = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <Link to="/admin/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/profile">Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>Team</DropdownMenuItem>
                   <DropdownMenuItem>Editor</DropdownMenuItem>

@@ -13,6 +13,7 @@ const navLinks = [
   { name: "Suggestions", path: "/admin/dashboard/suggestions" },
   { name: "AI", path: "/admin/dashboard/ai" },
   { name: "Recent Activities", path: "/admin/dashboard/recent" },
+  { name: "Comments", path: "/admin/dashboard/comments" },
 ];
 
 const AdminDashboard = () => {
@@ -77,7 +78,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* {/* Main Content */}
-        <main className="flex-1 p-6 mt-16 md:mt-20">
+        <main className="flex-1 p-6 mt-16 md:mt-20 ">
           <Outlet /> {/* Render nested routes here */}
         </main>
       </div>

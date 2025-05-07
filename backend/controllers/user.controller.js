@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { deleteMediaFromCloudinary, uploadMedia } from "../utils/cloudinary.js";
 
 //user register function
 export const register = async (req, res) => {
@@ -106,42 +107,97 @@ export const logout = async (req, res) => {
   }
 };
 
+//get user profile
+export const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.id;
+    const user = await User.findById(userId)
+      .select("-password")
+      .populate({
+        path: "teams",
+        populate: [
+          { path: "members", select: "name email" },
+          { path: "documents", select: "title" },
+        ],
+      });
+    //
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Profile not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to load user",
+    });
+  }
+};
+
 // update user profile
 export const updateProfile = async (req, res) => {
   try {
     const { name, email, bio } = req.body;
-    const file = req.file;
+    const profilePhoto = req.file;
+    const userId = req.id; // set by auth middleware
 
-    const userId = req.id; // middleware
     let user = await User.findById(userId).populate("teams", "name");
     if (!user) {
-      return res.status(400).json({
+      return res.status(404).json({
         message: "User not found",
         success: false,
       });
     }
 
-    //updating data
+    // Ensure profile object exists
+    if (!user.profile) {
+      user.profile = {};
+    }
+
+    // Delete previous profile photo if new one is uploaded
+    if (profilePhoto && user.profile.profilePhoto) {
+      const publicId = user.profile.profilePhoto.split("/").pop().split(".")[0];
+      await deleteMediaFromCloudinary(publicId);
+    }
+
+    // Upload new photo if available
+    let photoUrl;
+    if (profilePhoto) {
+      const cloudResponse = await uploadMedia(profilePhoto.path);
+      photoUrl = cloudResponse.secure_url;
+    }
+
+    // Apply updates
     if (name) user.name = name;
     if (email) user.email = email;
     if (bio) user.profile.bio = bio;
+    if (photoUrl) user.profile.profilePhoto = photoUrl;
 
     await user.save();
 
-    user = {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      profile: user.profile,
-    };
-
     return res.status(200).json({
       message: "Profile Updated Successfully",
-      user,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        profile: user.profile,
+      },
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Profile update error:", error);
+    return res.status(500).json({
+      message: "Something went wrong",
+      success: false,
+    });
   }
 };
