@@ -43,7 +43,7 @@ const DocumentManager = () => {
   };
 
   return (
-    <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
       {data?.documents?.map((doc) => (
         <Card key={doc._id}>
           <CardHeader>

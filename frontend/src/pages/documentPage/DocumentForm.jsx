@@ -1,5 +1,5 @@
 // DocumentForm.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,12 +10,16 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { useLocation } from "react-router-dom";
 import { useGetMyTeamsQuery } from "@/store/api/teamApi";
 import {
   useCreateDocumentMutation,
   useUpdateDocumentMutation,
 } from "@/store/api/documentApi";
 import { toast } from "sonner";
+import RichTextEditor from "@/components/shared/Editor";
+import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const DocumentForm = ({
   existingDocument = null,
@@ -28,18 +32,27 @@ const DocumentForm = ({
   const { data: teamsData } = useGetMyTeamsQuery();
   const [createDocument] = useCreateDocumentMutation();
   const [updateDocument] = useUpdateDocumentMutation();
-
+  const sanitizedContent = DOMPurify.sanitize(content);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (existingDocument) {
-        await updateDocument({ id: existingDocument._id, title, content });
+        await updateDocument({
+          id: existingDocument._id,
+          title,
+          content: sanitizedContent,
+        });
         toast.success("Document updated");
       } else {
-        await createDocument({ title, content, teamId: selectedTeamId });
+        await createDocument({
+          title,
+          content: sanitizedContent,
+          teamId: selectedTeamId,
+        });
         toast.success("Document created");
         setTitle("");
         setContent("");
+
         setSelectedTeamId("");
       }
       if (onSuccess) onSuccess();
@@ -47,6 +60,20 @@ const DocumentForm = ({
       toast.error("Error", err.message);
     }
   };
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.updatedContent) {
+      setContent(location.state.updatedContent);
+    }
+    if (location.state?.title) {
+      setTitle(location.state.title);
+    }
+    if (location.state?.selectedTeamId) {
+      setSelectedTeamId(location.state.selectedTeamId);
+    }
+  }, [location.state]);
 
   return (
     <div>
@@ -64,14 +91,25 @@ const DocumentForm = ({
               onChange={(e) => setTitle(e.target.value)}
               required
             />
-            <textarea
-              placeholder="Document Content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              rows={6}
-              required
-              className="resize-none w-full h-10 pl-2"
-            />
+            <div
+              onClick={() =>
+                navigate("/document/edit-content", {
+                  state: { content, title, selectedTeamId },
+                })
+              }
+              className="border rounded-md p-2 min-h-[120px] cursor-text text-muted-foreground"
+            >
+              {content ? (
+                <div
+                  className="prose max-w-none"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(content),
+                  }}
+                />
+              ) : (
+                <span className="text-gray-400">Click to edit content...</span>
+              )}
+            </div>
             {!existingDocument && (
               <Select value={selectedTeamId} onValueChange={setSelectedTeamId}>
                 <SelectTrigger>

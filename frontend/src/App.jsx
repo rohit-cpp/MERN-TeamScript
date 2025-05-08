@@ -25,6 +25,7 @@ import DocumentListWrapper from "./pages/documentPage/DocumentListWrapper";
 import DocumentManager from "./pages/documentPage/DocumentManager";
 import DocumentForm from "./pages/documentPage/DocumentForm";
 import DocumentFormPage from "./pages/documentPage/DocumentFormPage";
+import FullPageEditor from "./components/shared/FullPageEditor";
 
 const appRouter = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const appRouter = createBrowserRouter([
       {
         path: "", // Default content for /document
         element: <DocumentFormPage />,
+      },
+      {
+        path: "edit-content", // Default content for /document
+        element: <FullPageEditor />,
       },
       {
         path: "detail/:id", // View single document
