@@ -1,46 +1,50 @@
-import React, { useState } from "react";
-
 import { useAddMemberToTeamMutation } from "@/store/api/teamApi";
+import { useState } from "react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
-const AddMemberToTeam = ({ teamId }) => {
-  const [userIdToAdd, setUserIdToAdd] = useState("");
-  const [addMemberToTeam, { isLoading }] = useAddMemberToTeamMutation();
+export default function AddMemberForm() {
+  const [teamName, setTeamName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [addMember, { isLoading }] = useAddMemberToTeamMutation();
 
-  const handleAddMember = async (e) => {
+  const handleAdd = async (e) => {
     e.preventDefault();
-    if (!userIdToAdd.trim()) {
-      toast.error("User ID is required!");
-      return;
-    }
-
     try {
-      await addMemberToTeam({ teamId, userIdToAdd }).unwrap();
+      await addMember({ teamName, userNameToAdd: userName }).unwrap();
       toast.success("Member added successfully!");
-      setUserIdToAdd("");
-    } catch (error) {
-      toast.error("Failed to add member");
+      setTeamName("");
+      setUserName("");
+    } catch (err) {
+      toast.error(err?.data?.message || "Something went wrong");
     }
   };
 
   return (
-    <form onSubmit={handleAddMember} className="space-y-4">
-      <div>
-        <Input
-          type="text"
-          value={userIdToAdd}
-          onChange={(e) => setUserIdToAdd(e.target.value)}
-          placeholder="Enter User ID"
-          required
-        />
-      </div>
-      <Button type="submit" disabled={isLoading}>
+    <form
+      onSubmit={handleAdd}
+      className="space-y-4 p-4 border rounded max-w-md"
+    >
+      <input
+        placeholder="Team Name"
+        value={teamName}
+        onChange={(e) => setTeamName(e.target.value)}
+        required
+        className="w-full p-2 border rounded"
+      />
+      <input
+        placeholder="User Name to Add"
+        value={userName}
+        onChange={(e) => setUserName(e.target.value)}
+        required
+        className="w-full p-2 border rounded"
+      />
+      <button
+        type="submit"
+        disabled={isLoading}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      >
         {isLoading ? "Adding..." : "Add Member"}
-      </Button>
+      </button>
     </form>
   );
-};
-
-export default AddMemberToTeam;
+}

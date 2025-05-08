@@ -1,34 +1,40 @@
-import Team from "@/components/shared/Team";
-import { useGetMyTeamsQuery } from "@/store/api/teamApi";
 import React from "react";
+import { useGetMyTeamsQuery } from "@/store/api/teamApi";
 
-const MyTeams = () => {
-  const { data: teamsData, isLoading, error } = useGetMyTeamsQuery();
+import { Loader2 } from "lucide-react";
+import TeamCard from "@/components/shared/TeamCard";
+
+const AllTeams = () => {
+  const { data, isLoading, isError } = useGetMyTeamsQuery();
 
   if (isLoading) {
-    return <div>Loading teams...</div>;
+    return (
+      <div className="flex justify-center items-center h-48">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    );
   }
 
-  if (error) {
-    return <div>Error fetching teams</div>;
+  if (isError || !data || !data.teams?.length) {
+    return (
+      <div className="text-center text-gray-500 mt-6">
+        No teams found or failed to load teams.
+      </div>
+    );
   }
 
-  const teams = teamsData?.teams || [];
+  // Remove duplicate teams by ID
+  const uniqueTeams = Array.from(
+    new Map(data.teams.map((team) => [team._id, team])).values()
+  );
 
   return (
-    <div>
-      <h2>Your Teams</h2>
-      {teams.length ? (
-        <div className="space-y-4">
-          {teams.map((team) => (
-            <Team key={team._id} team={team} />
-          ))}
-        </div>
-      ) : (
-        <p>You are not part of any teams yet.</p>
-      )}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+      {uniqueTeams.map((team) => (
+        <TeamCard key={team._id} team={team} />
+      ))}
     </div>
   );
 };
 
-export default MyTeams;
+export default AllTeams;

@@ -35,14 +35,12 @@ export const teamApi = createApi({
 
     // POST /team/add-member
     addMemberToTeam: builder.mutation({
-      query: ({ teamId, userIdToAdd }) => ({
+      query: ({ teamName, userNameToAdd }) => ({
         url: "add-member",
         method: "POST",
-        body: { teamId, userIdToAdd },
+        body: { teamName, userNameToAdd },
       }),
-      invalidatesTags: (result, error, { teamId }) => [
-        { type: "Team", id: teamId },
-      ],
+      invalidatesTags: (result, error, { teamName }) => [{ type: "Team" }],
     }),
   }),
 });

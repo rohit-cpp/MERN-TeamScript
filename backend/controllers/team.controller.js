@@ -72,8 +72,9 @@ export const getTeamById = async (req, res) => {
     const teamId = req.params.id;
 
     const team = await Team.findById(teamId)
-      .populate("members")
-      .populate("documents");
+      .populate("members", "name email")
+      .populate("documents", "title")
+      .populate("createdBy", "name");
 
     if (!team) {
       return res.status(404).json({
@@ -97,11 +98,14 @@ export const getTeamById = async (req, res) => {
 };
 
 // add member to the team (admin)
+// Add member by using team name and user name
 export const addMemberToTeam = async (req, res) => {
   try {
-    const { teamId, userIdToAdd } = req.body;
+    const { teamName, userNameToAdd } = req.body;
     const currentUserId = req.id;
-    const team = await Team.findById(teamId);
+
+    // Find the team by name
+    const team = await Team.findOne({ name: teamName });
     if (!team) {
       return res.status(404).json({
         message: "Team not found",
@@ -109,6 +113,7 @@ export const addMemberToTeam = async (req, res) => {
       });
     }
 
+    // Check if current user is the team admin
     if (String(team.createdBy) !== currentUserId) {
       return res.status(403).json({
         message: "Only admin can add members",
@@ -116,23 +121,33 @@ export const addMemberToTeam = async (req, res) => {
       });
     }
 
-    // avoid adding duplicate members
-    if (team.members.includes(userIdToAdd)) {
-      return res.status(400).json({
-        message: "User is already in a team member",
+    // Find the user by name
+    const userToAdd = await User.findOne({ name: userNameToAdd });
+    if (!userToAdd) {
+      return res.status(404).json({
+        message: "User not found",
         success: false,
       });
     }
-    team.members.push(userIdToAdd);
+
+    // Prevent duplicate members
+    if (team.members.includes(userToAdd._id)) {
+      return res.status(400).json({
+        message: "User is already a member of the team",
+        success: false,
+      });
+    }
+
+    // Add member to team
+    team.members.push(userToAdd._id);
     await team.save();
 
-    //add team to new members records
-    await User.findByIdAndUpdate(userIdToAdd, {
-      $push: { teams: team._id },
-    });
+    // Add team to user's teams
+    userToAdd.teams.push(team._id);
+    await userToAdd.save();
 
     res.status(200).json({
-      message: "Member added successfully",
+      message: `User ${userNameToAdd} added to team ${teamName} successfully`,
       team,
       success: true,
     });

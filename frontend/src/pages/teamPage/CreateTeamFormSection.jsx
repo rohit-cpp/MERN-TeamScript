@@ -1,44 +1,43 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { useCreateTeamMutation } from "@/store/api/teamApi";
-import React, { useState } from "react";
-
 import { toast } from "sonner";
 
 const CreateTeam = () => {
-  const [teamName, setTeamName] = useState("");
+  const [name, setName] = useState("");
   const [createTeam, { isLoading }] = useCreateTeamMutation();
 
-  const handleCreateTeam = async (e) => {
+  const handleCreate = async (e) => {
     e.preventDefault();
-    if (!teamName.trim()) {
-      toast.error("Team name is required!");
-      return;
-    }
     try {
-      await createTeam(teamName).unwrap();
-      toast.success("Team created successfully!");
-      setTeamName("");
+      await createTeam(name).unwrap();
+      toast.success("Team created successfully");
+      setName("");
     } catch (error) {
       toast.error("Failed to create team");
     }
   };
 
   return (
-    <form onSubmit={handleCreateTeam} className="space-y-4">
-      <div>
-        <Input
+    <div className="max-w-md mx-auto">
+      <h2 className="text-xl font-semibold mb-4">Create a New Team</h2>
+      <form onSubmit={handleCreate} className="space-y-4">
+        <input
           type="text"
-          value={teamName}
-          onChange={(e) => setTeamName(e.target.value)}
-          placeholder="Enter team name"
+          placeholder="Team Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full border border-gray-300 rounded px-3 py-2"
           required
         />
-      </div>
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? "Creating..." : "Create Team"}
-      </Button>
-    </form>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          {isLoading ? "Creating..." : "Create Team"}
+        </button>
+      </form>
+    </div>
   );
 };
 

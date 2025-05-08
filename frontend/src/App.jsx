@@ -17,6 +17,7 @@ import CreateTeam from "./pages/teamPage/CreateTeamFormSection";
 import MyTeams from "./pages/teamPage/AllTeamDetails";
 import AddMemberToTeam from "./pages/teamPage/AddMember";
 import SingleTeamDetails from "./pages/teamPage/SingleTeamDetails";
+import TeamDashboardLayout from "./pages/teamPage/TeamDashboardLayout";
 
 const appRouter = createBrowserRouter([
   {
@@ -33,9 +34,10 @@ const appRouter = createBrowserRouter([
   },
   {
     path: "/teams",
+    element: <TeamDashboardLayout />,
     children: [
       {
-        index: true,
+        path: "",
         element: <TeamPage />,
       },
       {
