@@ -45,9 +45,12 @@ const Navbar = () => {
           <Link to="/" className="cursor-pointer hover:underline">
             Home
           </Link>
-          <Link className="cursor-pointer hover:underline">Features</Link>
+
           <Link to="/teams" className="cursor-pointer hover:underline">
             Team
+          </Link>
+          <Link to="/document" className="cursor-pointer hover:underline">
+            Document
           </Link>
           {/* <a href="#login" className="hover:underline">
           Login

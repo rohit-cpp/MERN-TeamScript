@@ -10,7 +10,7 @@ import AdminAi from "./pages/admin/AdminAi";
 import AdminRecent from "./pages/admin/AdminRecent";
 import AdminComment from "./pages/admin/AdminComment";
 import Profile from "./pages/profilePage/Profile";
-import DocumentEditor from "./pages/documentPage/DocumentEditor";
+
 import TeamPage from "./pages/teamPage/team";
 import TeamDetails from "./pages/teamPage/AllTeamDetails";
 import CreateTeam from "./pages/teamPage/CreateTeamFormSection";
@@ -18,6 +18,13 @@ import MyTeams from "./pages/teamPage/AllTeamDetails";
 import AddMemberToTeam from "./pages/teamPage/AddMember";
 import SingleTeamDetails from "./pages/teamPage/SingleTeamDetails";
 import TeamDashboardLayout from "./pages/teamPage/TeamDashboardLayout";
+import DocumentEditor from "./pages/documentPage/DocumentEditor";
+import DocumentDetail from "./pages/documentPage/DocumentDetail";
+import DocumentLayout from "./pages/documentPage/DocumentLayout";
+import DocumentListWrapper from "./pages/documentPage/DocumentListWrapper";
+import DocumentManager from "./pages/documentPage/DocumentManager";
+import DocumentForm from "./pages/documentPage/DocumentForm";
+import DocumentFormPage from "./pages/documentPage/DocumentFormPage";
 
 const appRouter = createBrowserRouter([
   {
@@ -31,6 +38,24 @@ const appRouter = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/document",
+    element: <DocumentLayout />, // This is the wrapper with <Outlet />
+    children: [
+      {
+        path: "", // Default content for /document
+        element: <DocumentFormPage />,
+      },
+      {
+        path: "detail/:id", // View single document
+        element: <DocumentDetail />,
+      },
+      {
+        path: "manage/:teamId",
+        element: <DocumentManager />,
+      },
+    ],
   },
   {
     path: "/teams",
@@ -57,10 +82,6 @@ const appRouter = createBrowserRouter([
         element: <AddMemberToTeam />,
       },
     ],
-  },
-  {
-    path: "/editor",
-    element: <DocumentEditor />,
   },
   {
     path: "/admin/dashboard",

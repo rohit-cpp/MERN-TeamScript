@@ -3,10 +3,15 @@ import authReducer from "./authSlice";
 import rootReducer from "./rootReducer";
 import { authApi } from "./api/authApi";
 import { teamApi } from "./api/teamApi";
+import { documentApi } from "./api/documentApi";
 const store = configureStore({
   reducer: rootReducer,
   middleware: (defaultMiddleware) =>
-    defaultMiddleware().concat(authApi.middleware, teamApi.middleware),
+    defaultMiddleware().concat(
+      authApi.middleware,
+      teamApi.middleware,
+      documentApi.middleware
+    ),
 });
 export default store;
 

@@ -1,30 +1,30 @@
+// DocumentForm.jsx
 import { useState } from "react";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
+  SelectValue,
 } from "@/components/ui/select";
-
 import { useGetMyTeamsQuery } from "@/store/api/teamApi";
 import {
   useCreateDocumentMutation,
   useUpdateDocumentMutation,
 } from "@/store/api/documentApi";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import Navbar from "@/components/shared/Navbar";
-import { useNavigate } from "react-router-dom";
 
-const DocumentEditor = ({ existingDocument, onSuccess }) => {
+const DocumentForm = ({
+  existingDocument = null,
+  onSuccess,
+  selectedTeamId,
+  setSelectedTeamId,
+}) => {
   const [title, setTitle] = useState(existingDocument?.title || "");
   const [content, setContent] = useState(existingDocument?.content || "");
-  const [teamId, setTeamId] = useState(existingDocument?.team || "");
-
   const { data: teamsData } = useGetMyTeamsQuery();
   const [createDocument] = useCreateDocumentMutation();
   const [updateDocument] = useUpdateDocumentMutation();
@@ -34,13 +34,13 @@ const DocumentEditor = ({ existingDocument, onSuccess }) => {
     try {
       if (existingDocument) {
         await updateDocument({ id: existingDocument._id, title, content });
-        toast.success("Updated successfully");
+        toast.success("Document updated");
       } else {
-        await createDocument({ title, content, teamId });
-        toast.success("Created successfully");
+        await createDocument({ title, content, teamId: selectedTeamId });
+        toast.success("Document created");
         setTitle("");
         setContent("");
-        setTeamId("");
+        setSelectedTeamId("");
       }
       if (onSuccess) onSuccess();
     } catch (err) {
@@ -48,36 +48,35 @@ const DocumentEditor = ({ existingDocument, onSuccess }) => {
     }
   };
 
-  // const navigate = useNavigate();
   return (
     <div>
-      <div>
-        <Navbar />
-      </div>
-      <Card className="w-full max-w-xl mx-auto my-30">
+      <Card className="w-full max-w-xl mx-auto my-6">
         <CardHeader>
           <CardTitle>
-            {existingDocument ? "Edit Document" : "New Document"}
+            {existingDocument ? "Edit Document" : "Create New Document"}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              placeholder="Title"
+              placeholder="Document Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
             />
             <textarea
-              placeholder="Content"
+              placeholder="Document Content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
+              rows={6}
               required
-              className="resize-none"
+              className="resize-none w-full h-10 pl-2"
             />
             {!existingDocument && (
-              <Select onValueChange={setTeamId} value={teamId} required>
-                <SelectTrigger>Choose Team</SelectTrigger>
+              <Select value={selectedTeamId} onValueChange={setSelectedTeamId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose a team" />
+                </SelectTrigger>
                 <SelectContent>
                   {teamsData?.teams?.map((team) => (
                     <SelectItem key={team._id} value={team._id}>
@@ -87,17 +86,23 @@ const DocumentEditor = ({ existingDocument, onSuccess }) => {
                 </SelectContent>
               </Select>
             )}
-            <Button type="submit">
-              {existingDocument ? "Update Document" : "Create Document"}
+            <Button type="submit" className="w-full">
+              {existingDocument ? "Update" : "Create"}
             </Button>
           </form>
+          {/* {selectedTeamId && (
+          <Button
+            onClick={() => onSuccess?.()}
+            variant="outline"
+            className="mt-4 w-full"
+          >
+            View All Documents
+          </Button>
+        )} */}
         </CardContent>
       </Card>
-      <div>
-        <Button> click here to view all documents </Button>
-      </div>
     </div>
   );
 };
 
-export default DocumentEditor;
+export default DocumentForm;
