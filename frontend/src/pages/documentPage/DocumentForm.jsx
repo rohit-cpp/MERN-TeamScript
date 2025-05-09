@@ -97,7 +97,7 @@ const DocumentForm = ({
                   state: { content, title, selectedTeamId },
                 })
               }
-              className="border rounded-md p-2 min-h-[120px] cursor-text text-muted-foreground"
+              className="border rounded-md p-2 min-h-[10px] cursor-text text-muted-foreground"
             >
               {content ? (
                 <div

@@ -25,7 +25,8 @@ export default function RichTextEditor({ content, setContent }) {
     extensions: [StarterKit, Underline, Link.configure({ openOnClick: false })],
     content: content || "",
     onUpdate: ({ editor }) => {
-      setContent(editor.getHTML());
+      const plainText = editor.getText();
+      setContent(plainText);
     },
   });
 

@@ -44,62 +44,69 @@ const DocumentManager = () => {
 
   return (
     <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-      {data?.documents?.map((doc) => (
-        <Card key={doc._id}>
-          <CardHeader>
-            <CardTitle>
+      {data?.documents ? (
+        data?.documents?.map((doc) => (
+          <Card key={doc._id}>
+            <CardHeader>
+              <CardTitle>
+                {editingDocId === doc._id ? (
+                  <Input
+                    value={editValues.title}
+                    onChange={(e) =>
+                      setEditValues((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }))
+                    }
+                  />
+                ) : (
+                  doc.title
+                )}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
               {editingDocId === doc._id ? (
-                <Input
-                  value={editValues.title}
-                  onChange={(e) =>
-                    setEditValues((prev) => ({
-                      ...prev,
-                      title: e.target.value,
-                    }))
-                  }
-                />
+                <>
+                  <textarea
+                    className="resize-none"
+                    value={editValues.content}
+                    onChange={(e) =>
+                      setEditValues((prev) => ({
+                        ...prev,
+                        content: e.target.value,
+                      }))
+                    }
+                  />
+                  <div className="flex gap-2">
+                    <Button onClick={handleUpdate}>Save</Button>
+                    <Button
+                      variant="ghost"
+                      onClick={() => setEditingDocId(null)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </>
               ) : (
-                doc.title
+                <>
+                  <p>{doc.content.slice(0, 120)}...</p>
+                  <div className="flex gap-2">
+                    <Button onClick={() => handleEdit(doc)}>Edit</Button>
+                    <Button
+                      variant="destructive"
+                      onClick={() => handleDelete(doc._id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </>
               )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {editingDocId === doc._id ? (
-              <>
-                <textarea
-                  className="resize-none"
-                  value={editValues.content}
-                  onChange={(e) =>
-                    setEditValues((prev) => ({
-                      ...prev,
-                      content: e.target.value,
-                    }))
-                  }
-                />
-                <div className="flex gap-2">
-                  <Button onClick={handleUpdate}>Save</Button>
-                  <Button variant="ghost" onClick={() => setEditingDocId(null)}>
-                    Cancel
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <p>{doc.content.slice(0, 120)}...</p>
-                <div className="flex gap-2">
-                  <Button onClick={() => handleEdit(doc)}>Edit</Button>
-                  <Button
-                    variant="destructive"
-                    onClick={() => handleDelete(doc._id)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </>
-            )}
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        ))
+      ) : (
+        <div className="text-5xl mt-20 text-center">No documents present</div>
+      )}
     </div>
   );
 };
