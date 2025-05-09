@@ -16,7 +16,7 @@ export default function CreateVersion() {
     try {
       await createVersion({ documentId, content }).unwrap();
       toast.success("Version created");
-      navigate("../list");
+      navigate(`../versionlist`);
     } catch {
       toast.error("Failed to create version");
     }

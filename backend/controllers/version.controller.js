@@ -42,7 +42,8 @@ export const getVersionsByDocument = async (req, res) => {
 
     const versions = await Version.find({ document: documentId })
       .populate("createdBy", "name email")
-      .populate("document", "title");
+      .populate("document", "title")
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       message: "Versions fetched successfully",

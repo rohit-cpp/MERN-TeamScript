@@ -116,7 +116,10 @@ export const getDocumentById = async (req, res) => {
     const document = await Document.findById(id)
       .populate("owner", "name email")
       .populate("team", "name")
-      .populate("versions")
+      .populate({
+        path: "versions",
+        populate: { path: "createdBy", select: "name email" },
+      })
       .populate("suggestions");
 
     if (!document) {
@@ -147,6 +150,24 @@ export const getAllDocumentsForTeam = async (req, res) => {
     res.status(200).json({ documents, success: true });
   } catch (error) {
     console.log(error);
+    res
+      .status(500)
+      .json({ message: "Failed to fetch documents", success: false });
+  }
+};
+
+// Get all documents (for /explore)
+export const getAllDocuments = async (req, res) => {
+  try {
+    const documents = await Document.find()
+      .populate("owner", "name email")
+      .populate("team", "name ")
+      .populate("versions", "title createdAt createdBy")
+      .populate("suggestions");
+
+    res.status(200).json({ documents, success: true });
+  } catch (error) {
+    console.error("Error fetching all documents:", error);
     res
       .status(500)
       .json({ message: "Failed to fetch documents", success: false });

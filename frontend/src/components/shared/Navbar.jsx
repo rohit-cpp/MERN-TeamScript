@@ -36,7 +36,7 @@ const Navbar = () => {
   }, [isSuccess]);
   return (
     <div>
-      <nav className="flex justify-between items-center px-18 shadow-lg shadow-gray-300 fixed top-0 w-full z-20">
+      <nav className="flex justify-between items-center px-11 shadow-lg shadow-gray-300 fixed top-0 w-full z-20">
         <div className="flex items-center justify-center mr-4 p-4">
           <img src="/public/logonew.png" alt="logo" className="w-10" />
           <h1 className="text-3xl font-bold text-orange-600">TeamScript</h1>
@@ -51,6 +51,9 @@ const Navbar = () => {
           </Link>
           <Link to="/document" className="cursor-pointer hover:underline">
             Document
+          </Link>
+          <Link to="/document/explore" className="hover:underline ">
+            Explore
           </Link>
           {/* <Link
             to={`/versions/${documentId}`}
@@ -97,8 +100,12 @@ const Navbar = () => {
               <>
                 {" "}
                 <div className="flex flex-row gap-6">
-                  <Link className="hover:underline">SignUp</Link>
-                  <Link className="hover:underline">Login</Link>
+                  <Link to="/login" className="hover:underline">
+                    SignUp
+                  </Link>
+                  <Link to="/login" className="hover:underline">
+                    Login
+                  </Link>
                 </div>
               </>
             )}

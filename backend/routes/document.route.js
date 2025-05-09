@@ -2,6 +2,7 @@ import express from "express";
 import {
   createDocument,
   deleteDocument,
+  getAllDocuments,
   getAllDocumentsForTeam,
   getDocumentById,
   updateDocument,
@@ -9,6 +10,7 @@ import {
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 
 const router = express.Router();
+router.route("/explore").get(isAuthenticated, getAllDocuments);
 router.route("/create").post(isAuthenticated, createDocument);
 router.route("/update/:id").post(isAuthenticated, updateDocument);
 router.route("/delete/:id").delete(isAuthenticated, deleteDocument);

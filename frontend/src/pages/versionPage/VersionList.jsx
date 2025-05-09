@@ -27,7 +27,8 @@ export default function VersionList() {
         <Card key={v._id}>
           <CardHeader>
             <CardTitle className="text-base font-medium line-clamp-1">
-              {v.createdBy?.name || "Unknown User"} –{" "}
+              {" "}
+              By: {v.createdBy?.name || "Unknown User"} –{" "}
               {new Date(v.createdAt).toLocaleString()}
             </CardTitle>
           </CardHeader>

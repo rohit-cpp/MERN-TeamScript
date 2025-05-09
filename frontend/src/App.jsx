@@ -31,6 +31,8 @@ import CreateVersion from "./pages/versionPage/VersionCreate";
 import VersionList from "./pages/versionPage/VersionList";
 import ViewVersion from "./pages/versionPage/VersionView";
 import EditVersion from "./pages/versionPage/VersionEdit";
+import Explore from "./pages/explore/Explore";
+import ExploreDocumentDetail from "./pages/explore/DocumentDetail";
 
 const appRouter = createBrowserRouter([
   {
@@ -44,6 +46,14 @@ const appRouter = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/document/explore",
+    element: <Explore />,
+  },
+  {
+    path: "/document/:id",
+    element: <ExploreDocumentDetail />,
   },
   {
     path: "/document",
@@ -98,16 +108,16 @@ const appRouter = createBrowserRouter([
     path: "/versions/:documentId",
     element: <VersionLayout />,
     children: [
-      {
-        path: "",
-        element: <CreateVersion />,
-      },
+      // {
+      //   path: "",
+      //   element: <CreateVersion />,
+      // },
       {
         path: "create",
         element: <CreateVersion />,
       },
       {
-        path: "list",
+        path: "versionlist",
         element: <VersionList />,
       },
       {

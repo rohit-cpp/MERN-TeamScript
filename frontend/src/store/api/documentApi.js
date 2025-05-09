@@ -45,6 +45,11 @@ export const documentApi = createApi({
       query: (teamId) => `team/${teamId}`,
       providesTags: ["Document"],
     }),
+
+    getAllDocuments: builder.query({
+      query: () => `explore`,
+      providesTags: ["Document"],
+    }),
   }),
 });
 
@@ -54,4 +59,5 @@ export const {
   useDeleteDocumentMutation,
   useGetDocumentByIdQuery,
   useGetAllDocumentsForTeamQuery,
+  useGetAllDocumentsQuery,
 } = documentApi;

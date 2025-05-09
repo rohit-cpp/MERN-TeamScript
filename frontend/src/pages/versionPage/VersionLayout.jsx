@@ -15,7 +15,7 @@ export default function VersionLayout() {
             <Link to="create">Create Version</Link>
           </Button>
           <Button asChild variant="link">
-            <Link to="list">All Versions</Link>
+            <Link to="versionlist">All Versions</Link>
           </Button>
         </nav>
         <Outlet />
