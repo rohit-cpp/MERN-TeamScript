@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
-
+import SuggestionForm from "../suggestionPage/Suggestion";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useGetDocumentByIdQuery } from "@/store/api/documentApi";
 import Navbar from "@/components/shared/Navbar";
@@ -36,6 +36,10 @@ const ExploreDocumentDetail = () => {
               {content}
             </p>
           </CardContent>
+          <div className="ml-5">
+            {" "}
+            <SuggestionForm />
+          </div>
         </Card>
 
         {/* Versions */}

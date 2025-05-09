@@ -62,11 +62,11 @@ const Explore = () => {
                       View
                     </Button>
                   </Link>
-                  <Link to={`/document/edit/${doc._id}`}>
+                  {/* <Link to={`/document/edit/${doc._id}`}>
                     <Button size="sm" variant="ghost" className="w-full">
                       Edit
                     </Button>
-                  </Link>
+                  </Link> */}
                 </div>
               </CardContent>
             </Card>

@@ -55,6 +55,7 @@ const appRouter = createBrowserRouter([
     path: "/document/:id",
     element: <ExploreDocumentDetail />,
   },
+
   {
     path: "/document",
     element: <DocumentLayout />, // This is the wrapper with <Outlet />

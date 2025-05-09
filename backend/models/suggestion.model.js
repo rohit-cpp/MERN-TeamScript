@@ -1,3 +1,4 @@
+// models/suggestion.model.js
 import mongoose from "mongoose";
 
 const suggestionSchema = new mongoose.Schema(
@@ -17,18 +18,10 @@ const suggestionSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    position: {
-      startIndex: { type: Number },
-      endIndex: { type: Number },
-    },
     status: {
       type: String,
       enum: ["pending", "accepted", "rejected"],
       default: "pending",
-    },
-    comment: {
-      type: String,
-      trim: true,
     },
   },
   { timestamps: true }
