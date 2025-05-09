@@ -26,6 +26,11 @@ import DocumentManager from "./pages/documentPage/DocumentManager";
 import DocumentForm from "./pages/documentPage/DocumentForm";
 import DocumentFormPage from "./pages/documentPage/DocumentFormPage";
 import FullPageEditor from "./components/shared/FullPageEditor";
+import VersionLayout from "./pages/versionPage/VersionLayout";
+import CreateVersion from "./pages/versionPage/VersionCreate";
+import VersionList from "./pages/versionPage/VersionList";
+import ViewVersion from "./pages/versionPage/VersionView";
+import EditVersion from "./pages/versionPage/VersionEdit";
 
 const appRouter = createBrowserRouter([
   {
@@ -85,6 +90,33 @@ const appRouter = createBrowserRouter([
       {
         path: "add-member",
         element: <AddMemberToTeam />,
+      },
+    ],
+  },
+
+  {
+    path: "/versions/:documentId",
+    element: <VersionLayout />,
+    children: [
+      {
+        path: "",
+        element: <CreateVersion />,
+      },
+      {
+        path: "create",
+        element: <CreateVersion />,
+      },
+      {
+        path: "list",
+        element: <VersionList />,
+      },
+      {
+        path: "view/:versionId",
+        element: <ViewVersion />,
+      },
+      {
+        path: "edit/:versionId",
+        element: <EditVersion />,
       },
     ],
   },

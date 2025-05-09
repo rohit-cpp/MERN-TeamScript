@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import {
   useDeleteDocumentMutation,
@@ -90,7 +90,7 @@ const DocumentManager = () => {
               ) : (
                 <>
                   <p>{doc.content.slice(0, 120)}...</p>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <Button onClick={() => handleEdit(doc)}>Edit</Button>
                     <Button
                       variant="destructive"
@@ -98,6 +98,9 @@ const DocumentManager = () => {
                     >
                       Delete
                     </Button>
+                    <Link to={`/versions/${doc._id}`}>
+                      <Button variant="outline">Manage Versions</Button>
+                    </Link>
                   </div>
                 </>
               )}
