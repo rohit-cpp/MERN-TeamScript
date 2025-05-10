@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import io from "socket.io-client";
+import jsPDF from "jspdf";
 import Navbar from "@/components/shared/Navbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -10,13 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { useGetMyTeamsQuery } from "@/store/api/teamApi";
 import { useSelector } from "react-redux";
 import RichTextEditor from "@/components/shared/Editor";
-import RephraseContent from "../geminiAI/RephraseContent";
-import GenerateTitle from "../geminiAI/GenerateTitle";
-import GenerateKeywords from "../geminiAI/GenerateKeywords";
-import OptimizeSEO from "../geminiAI/OptimizeSeo";
 
 const socket = io("http://localhost:8000");
 
@@ -43,7 +41,7 @@ const CollaborativeEditor = () => {
     });
 
     socket.on("receive-changes", (newContent) => {
-      setContent(newContent); // this sets HTML content
+      setContent(newContent); // plain text content
     });
 
     socket.on("active-users", (users) => setActiveUsers(users));
@@ -60,7 +58,7 @@ const CollaborativeEditor = () => {
 
     clearTimeout(typingTimeout.current);
     typingTimeout.current = setTimeout(() => {
-      socket.emit("send-changes", { docId, content: newContent }); // send HTML
+      socket.emit("send-changes", { docId, content: newContent });
     }, 300);
   };
 
@@ -68,6 +66,21 @@ const CollaborativeEditor = () => {
     setContent(newText);
     setAiOutput(newText);
     socket.emit("send-changes", { docId, content: newText });
+  };
+
+  const downloadPlainText = () => {
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `document-${docId || "untitled"}.txt`;
+    link.click();
+  };
+
+  const downloadAsPDF = () => {
+    const doc = new jsPDF();
+    const lines = doc.splitTextToSize(content, 180);
+    doc.text(lines, 10, 10);
+    doc.save(`document-${docId || "untitled"}.pdf`);
   };
 
   return (
@@ -129,19 +142,15 @@ const CollaborativeEditor = () => {
                 setContent={handleEditorChange}
                 incomingContent={content}
               />
-              {/* 
-              <div className="mt-6 space-y-4">
-                <RephraseContent
-                  text={content}
-                  onResult={updateContentWithAI}
-                />
-                <GenerateTitle text={content} onResult={updateContentWithAI} />
-                <GenerateKeywords
-                  text={content}
-                  onResult={updateContentWithAI}
-                />
-                <OptimizeSEO text={content} onResult={updateContentWithAI} />
-              </div> */}
+
+              <div className="flex gap-2 mt-4">
+                <Button variant="outline" onClick={downloadPlainText}>
+                  Download as Plain Text
+                </Button>
+                <Button variant="outline" onClick={downloadAsPDF}>
+                  Download as PDF
+                </Button>
+              </div>
 
               {aiOutput && (
                 <div className="mt-4 p-4 border rounded bg-gray-50">

@@ -21,7 +21,7 @@ import GenerateTitle from "@/pages/geminiAI/GenerateTitle";
 import GenerateKeywords from "@/pages/geminiAI/GenerateKeywords";
 import OptimizeSEO from "@/pages/geminiAI/OptimizeSeo";
 
-export default function RichTextEditor({
+export default function RichTextEditorForCreate({
   content,
   setContent,
   incomingContent,
@@ -33,8 +33,8 @@ export default function RichTextEditor({
     extensions: [StarterKit, Underline, Link.configure({ openOnClick: false })],
     content: content || "",
     onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
-      setContent(html); // send plain text back
+      const planText = editor.getText();
+      setContent(planText); // send plain text back
     },
   });
 
