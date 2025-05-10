@@ -46,27 +46,30 @@ const SingleTeamDetails = () => {
         <CardHeader>
           <CardTitle className="text-2xl text-cyan-700">{team.name}</CardTitle>
           <CardDescription>
-            {team.description || "No description available."}
+            {/* {team.description || "No description available."} */}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Members Section */}
+
           <div>
             <h3 className="text-lg font-semibold">Team Members</h3>
             <Separator className="my-2" />
             {team.members?.length ? (
-              <ul className="space-y-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {team.members.map((member) => (
-                  <li key={member._id} className="bg-muted/40 p-3 rounded-md">
-                    <p className="text-sm">
-                      <strong>Name:</strong> {member.name}
-                    </p>
-                    <p className="text-sm">
-                      <strong>Email:</strong> {member.email}
-                    </p>
-                  </li>
+                  <Card key={member._id} className="p-4">
+                    <CardHeader className="p-0">
+                      <CardTitle className="text-base">{member.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                      <p className="text-sm text-muted-foreground">
+                        <strong>Email:</strong> {member.email}
+                      </p>
+                    </CardContent>
+                  </Card>
                 ))}
-              </ul>
+              </div>
             ) : (
               <p className="text-sm text-muted-foreground">
                 No members listed.

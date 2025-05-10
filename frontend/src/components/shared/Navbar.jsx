@@ -88,9 +88,11 @@ const Navbar = () => {
                     {" "}
                     <Link to="/teams">Team</Link>{" "}
                   </DropdownMenuItem>
-                  <DropdownMenuItem>Editor</DropdownMenuItem>
-                  <DropdownMenuItem>Verions</DropdownMenuItem>
-                  <DropdownMenuItem>Suggestion</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    {" "}
+                    <Link to="/user-suggestion">Suggestions</Link>{" "}
+                  </DropdownMenuItem>
+
                   <DropdownMenuItem onClick={logoutHandler}>
                     Logout
                   </DropdownMenuItem>

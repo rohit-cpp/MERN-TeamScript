@@ -64,3 +64,22 @@ export const deleteSuggestion = async (req, res) => {
     res.status(500).json({ message: "Server error", success: false });
   }
 };
+
+// Get all suggestions by current user
+export const getSuggestionsByUser = async (req, res) => {
+  try {
+    const userId = req.id;
+    const suggestions = await Suggestion.find({ suggestedBy: userId }).populate(
+      "document"
+    );
+
+    res.status(200).json({
+      message: "User suggestions fetched successfully",
+      suggestions,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error fetching user suggestions:", error);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};

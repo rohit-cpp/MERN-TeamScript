@@ -33,6 +33,9 @@ import ViewVersion from "./pages/versionPage/VersionView";
 import EditVersion from "./pages/versionPage/VersionEdit";
 import Explore from "./pages/explore/Explore";
 import ExploreDocumentDetail from "./pages/explore/DocumentDetail";
+import UserSuggestionList from "./pages/suggestionPage/UserSuggestion";
+import CollaborativeEditor from "./pages/collaborativeEditor/CollaborativeEditor";
+import ProtectedRoute from "./components/shared/ProtectedRoutes";
 
 const appRouter = createBrowserRouter([
   {
@@ -55,7 +58,20 @@ const appRouter = createBrowserRouter([
     path: "/document/:id",
     element: <ExploreDocumentDetail />,
   },
-
+  {
+    path: "/user-suggestion",
+    element: <UserSuggestionList />,
+  },
+  {
+    path: "/document",
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "collab/:id",
+        element: <CollaborativeEditor />,
+      },
+    ],
+  },
   {
     path: "/document",
     element: <DocumentLayout />, // This is the wrapper with <Outlet />
