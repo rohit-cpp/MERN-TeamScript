@@ -10,7 +10,6 @@ import AdminAi from "./pages/admin/AdminAi";
 import AdminRecent from "./pages/admin/AdminRecent";
 import AdminComment from "./pages/admin/AdminComment";
 import Profile from "./pages/profilePage/Profile";
-
 import TeamPage from "./pages/teamPage/team";
 import TeamDetails from "./pages/teamPage/AllTeamDetails";
 import CreateTeam from "./pages/teamPage/CreateTeamFormSection";

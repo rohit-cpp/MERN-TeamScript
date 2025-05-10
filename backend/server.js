@@ -52,19 +52,54 @@ app.use("/api/suggestion", suggestionRoute);
 app.use("/api/comment", commentRoute);
 
 // WebSocket logic
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
 
-  socket.on("join-document", (docId) => {
+const activeUsers = {}; // { docId: { socketId: { username, profilePhoto, teamId, active: boolean } } }
+
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  socket.on("join-document", ({ docId, username, teamId, profilePhoto }) => {
     socket.join(docId);
-    console.log(`User ${socket.id} joined document ${docId}`);
+
+    if (!activeUsers[docId]) activeUsers[docId] = {};
+    activeUsers[docId][socket.id] = {
+      username,
+      teamId,
+      profilePhoto,
+      active: false,
+    };
+
+    io.to(docId).emit("active-users", Object.values(activeUsers[docId]));
+    console.log(`${username} joined doc ${docId}`);
+  });
+
+  socket.on("user-activity", ({ docId }) => {
+    if (activeUsers[docId]?.[socket.id]) {
+      activeUsers[docId][socket.id].active = true;
+
+      io.to(docId).emit("active-users", Object.values(activeUsers[docId]));
+
+      setTimeout(() => {
+        if (activeUsers[docId]?.[socket.id]) {
+          activeUsers[docId][socket.id].active = false;
+          io.to(docId).emit("active-users", Object.values(activeUsers[docId]));
+        }
+      }, 3000);
+    }
   });
 
   socket.on("send-changes", ({ docId, content }) => {
     socket.to(docId).emit("receive-changes", content);
+    socket.emit("user-activity", { docId }); // Self-trigger for current user too
   });
 
   socket.on("disconnect", () => {
+    for (const docId in activeUsers) {
+      if (activeUsers[docId][socket.id]) {
+        delete activeUsers[docId][socket.id];
+        io.to(docId).emit("active-users", Object.values(activeUsers[docId]));
+      }
+    }
     console.log("User disconnected:", socket.id);
   });
 });
