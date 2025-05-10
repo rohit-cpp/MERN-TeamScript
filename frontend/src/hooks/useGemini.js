@@ -1,12 +1,12 @@
 // src/hooks/useGemini.js
 
 export const useGemini = () => {
-  const GEMINI_API_KEY = "AIzaSyAogWlkkEMp5KQKvPcF-7YHTXNU8kWJUO0"; // Replace or use from .env
-
   const askGemini = async (prompt) => {
     try {
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${
+          import.meta.env.VITE_GEMINI_API_KEY
+        }`,
         {
           method: "POST",
           headers: {
