@@ -30,7 +30,15 @@ export const suggestionApi = createApi({
     }),
     getSuggestionsByUser: builder.query({
       query: () => "/user-suggestion",
-      providesTags: ["Suggestions"],
+      providesTags: ["Suggestion"],
+    }),
+    updateSuggestionStatus: builder.mutation({
+      query: ({ suggestionId, status }) => ({
+        url: `status/${suggestionId}`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: ["Suggestion"],
     }),
   }),
 });
@@ -40,4 +48,5 @@ export const {
   useGetSuggestionsByDocumentQuery,
   useDeleteSuggestionMutation,
   useGetSuggestionsByUserQuery,
+  useUpdateSuggestionStatusMutation,
 } = suggestionApi;

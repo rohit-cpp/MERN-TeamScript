@@ -83,3 +83,40 @@ export const getSuggestionsByUser = async (req, res) => {
     res.status(500).json({ message: "Server error", success: false });
   }
 };
+
+// Accept or reject a suggestion
+export const updateSuggestionStatus = async (req, res) => {
+  try {
+    const { suggestionId } = req.params;
+    const { status } = req.body;
+
+    if (!["accepted", "rejected"].includes(status)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid status", success: false });
+    }
+
+    const suggestion = await Suggestion.findByIdAndUpdate(
+      suggestionId,
+      { status },
+      { new: true }
+    ).populate("suggestedBy", "name email");
+
+    if (!suggestion) {
+      return res
+        .status(404)
+        .json({ message: "Suggestion not found", success: false });
+    }
+
+    res
+      .status(200)
+      .json({
+        message: "Suggestion status updated",
+        suggestion,
+        success: true,
+      });
+  } catch (error) {
+    console.error("Update suggestion status error:", error);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};

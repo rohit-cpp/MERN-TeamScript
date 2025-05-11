@@ -101,6 +101,9 @@ const DocumentManager = () => {
                     <Link to={`/versions/${doc._id}`}>
                       <Button variant="outline">Manage Versions</Button>
                     </Link>
+                    <Link to={`/admin/suggestions/${doc._id}`}>
+                      <Button variant="outline">Manage Suggestion</Button>
+                    </Link>
                   </div>
                 </>
               )}

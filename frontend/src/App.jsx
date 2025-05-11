@@ -35,6 +35,7 @@ import ExploreDocumentDetail from "./pages/explore/DocumentDetail";
 import UserSuggestionList from "./pages/suggestionPage/UserSuggestion";
 import CollaborativeEditor from "./pages/collaborativeEditor/CollaborativeEditor";
 import ProtectedRoute from "./components/shared/ProtectedRoutes";
+import AdminSuggestionManager from "./pages/suggestionPage/AdminSuggestion";
 
 const appRouter = createBrowserRouter([
   {
@@ -62,11 +63,15 @@ const appRouter = createBrowserRouter([
     element: <UserSuggestionList />,
   },
   {
+    path: "/admin/suggestions/:documentId",
+    element: <AdminSuggestionManager />,
+  },
+  {
     path: "/document",
     element: <ProtectedRoute />,
     children: [
       {
-        path: "collab/:id",
+        path: "collab",
         element: <CollaborativeEditor />,
       },
     ],

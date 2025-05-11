@@ -55,6 +55,9 @@ const Navbar = () => {
           <Link to="/document/explore" className="hover:underline ">
             Explore
           </Link>
+          <Link to="/document/collab" className="hover:underline ">
+            Collab
+          </Link>
           {/* <Link
             to={`/versions/${documentId}`}
             className="cursor-pointer hover:underline"

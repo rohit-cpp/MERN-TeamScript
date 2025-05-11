@@ -81,7 +81,7 @@ const AdminDocuments = () => {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Comments Today</CardTitle>
+            <CardTitle>Total Teams</CardTitle>
           </CardHeader>
           <CardContent>
             <p>32</p>
