@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getAllUsers,
   getUserProfile,
   login,
   logout,
@@ -17,5 +18,5 @@ router
   .route("/profile/update")
   .post(isAuthenticated, upload.single("profilePhoto"), updateProfile);
 router.route("/logout").get(logout);
-
+router.route("/users").get(isAuthenticated, getAllUsers);
 export default router;

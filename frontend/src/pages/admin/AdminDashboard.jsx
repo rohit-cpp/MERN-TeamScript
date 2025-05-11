@@ -10,10 +10,10 @@ const navLinks = [
   { name: "Dashboard", path: "/admin/dashboard" },
   { name: "Documents", path: "/admin/dashboard/documents" },
   { name: "Users", path: "/admin/dashboard/users" },
-  { name: "Suggestions", path: "/admin/dashboard/suggestions" },
-  { name: "AI", path: "/admin/dashboard/ai" },
+  // { name: "Suggestions", path: "/admin/dashboard/all" },
+  // { name: "AI", path: "/admin/dashboard/ai" },
   { name: "Recent Activities", path: "/admin/dashboard/recent" },
-  { name: "Comments", path: "/admin/dashboard/comments" },
+  // { name: "Comments", path: "/admin/dashboard/comments" },
 ];
 
 const AdminDashboard = () => {

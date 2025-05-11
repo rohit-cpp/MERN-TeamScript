@@ -6,6 +6,7 @@ import {
   deleteSuggestion,
   getSuggestionsByUser,
   updateSuggestionStatus,
+  getAllSuggestions,
 } from "../controllers/suggestion.controller.js";
 
 const router = express.Router();
@@ -16,4 +17,5 @@ router.route("/user-suggestion").get(isAuthenticated, getSuggestionsByUser);
 router
   .route("/status/:suggestionId")
   .patch(isAuthenticated, updateSuggestionStatus);
+router.route("/all").get(isAuthenticated, getAllSuggestions);
 export default router;

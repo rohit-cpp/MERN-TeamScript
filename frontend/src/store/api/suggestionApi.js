@@ -40,6 +40,10 @@ export const suggestionApi = createApi({
       }),
       invalidatesTags: ["Suggestion"],
     }),
+    getAllSuggestions: builder.query({
+      query: () => "all",
+      providesTags: ["Suggestion"],
+    }),
   }),
 });
 
@@ -49,4 +53,5 @@ export const {
   useDeleteSuggestionMutation,
   useGetSuggestionsByUserQuery,
   useUpdateSuggestionStatusMutation,
+  useGetAllSuggestionsQuery,
 } = suggestionApi;

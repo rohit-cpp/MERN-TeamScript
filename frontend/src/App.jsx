@@ -178,7 +178,7 @@ const appRouter = createBrowserRouter([
         element: <AdminUsers />,
       },
       {
-        path: "suggestions",
+        path: "all",
         element: <AdminSuggestions />,
       },
       {

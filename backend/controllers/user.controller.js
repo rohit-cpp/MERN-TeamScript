@@ -201,3 +201,26 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
+
+// get all users
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password"); // Exclude password field from the response
+    if (!users) {
+      return res.status(404).json({
+        message: "No users found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch users",
+    });
+  }
+};

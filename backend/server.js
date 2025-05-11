@@ -52,7 +52,6 @@ app.use("/api/suggestion", suggestionRoute);
 app.use("/api/comment", commentRoute);
 
 // WebSocket logic
-
 const activeUsers = {}; // { docId: { socketId: { username, profilePhoto, teamId, active: boolean } } }
 
 io.on("connection", (socket) => {
@@ -68,6 +67,16 @@ io.on("connection", (socket) => {
       profilePhoto,
       active: false,
     };
+
+    // Emit activity log
+    io.emit("activity-log", {
+      user: username,
+      action: "connected in",
+      target: `Collaborative editor`,
+      avatar: profilePhoto,
+      badgeColor: "green",
+      time: new Date().toISOString(),
+    });
 
     io.to(docId).emit("active-users", Object.values(activeUsers[docId]));
     console.log(`${username} joined doc ${docId}`);
@@ -90,16 +99,29 @@ io.on("connection", (socket) => {
 
   socket.on("send-changes", ({ docId, content }) => {
     socket.to(docId).emit("receive-changes", content);
-    socket.emit("user-activity", { docId }); // Self-trigger for current user too
+    socket.emit("user-activity", { docId }); // Trigger self
   });
 
   socket.on("disconnect", () => {
     for (const docId in activeUsers) {
       if (activeUsers[docId][socket.id]) {
+        const { username, profilePhoto } = activeUsers[docId][socket.id];
+
+        // Emit activity log
+        io.emit("activity-log", {
+          user: username,
+          action: "disconnected from",
+          target: `Collaborative Editor`,
+          avatar: profilePhoto,
+          badgeColor: "red",
+          time: new Date().toISOString(),
+        });
+
         delete activeUsers[docId][socket.id];
         io.to(docId).emit("active-users", Object.values(activeUsers[docId]));
       }
     }
+
     console.log("User disconnected:", socket.id);
   });
 });

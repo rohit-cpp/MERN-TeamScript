@@ -108,15 +108,25 @@ export const updateSuggestionStatus = async (req, res) => {
         .json({ message: "Suggestion not found", success: false });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Suggestion status updated",
-        suggestion,
-        success: true,
-      });
+    res.status(200).json({
+      message: "Suggestion status updated",
+      suggestion,
+      success: true,
+    });
   } catch (error) {
     console.error("Update suggestion status error:", error);
     res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+//get all suggestion
+export const getAllSuggestions = async (req, res) => {
+  try {
+    const suggestions = await Suggestion.find()
+      .populate("user", "name email") // populate user info
+      .populate("document", "title team"); // optionally populate doc info
+    res.json(suggestions);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching suggestions" });
   }
 };

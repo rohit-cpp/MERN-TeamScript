@@ -1,91 +1,84 @@
 import React from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import Navbar from "@/components/shared/Navbar";
-
-export const users = [
-  {
-    _id: "u1",
-    name: "Alice Johnson",
-    email: "alice@example.com",
-    role: "admin",
-  },
-  {
-    _id: "u2",
-    name: "Bob Smith",
-    email: "bob@example.com",
-    role: "member",
-  },
-  {
-    _id: "u3",
-    name: "Carol Danvers",
-    email: "carol@example.com",
-    role: "member",
-  },
-];
+import { useGetAllUsersQuery } from "@/store/api/authApi";
+import { toast } from "sonner";
 
 const AdminUsers = () => {
-  return (
-    <div>
-      <div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow key={user._id}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <Select
-                    value={user.role}
-                    onValueChange={(newRole) =>
-                      handleRoleChange(user._id, newRole)
-                    }
-                  >
-                    <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="member">Member</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="destructive"
-                    onClick={() => deleteUser(user._id)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+  const { data, isLoading, isError } = useGetAllUsersQuery();
+
+  // Toast notifications for success and error
+  const showToast = (message, type = "success") => {
+    if (type === "success") {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
+  };
+
+  const handleDeleteUser = (userId) => {
+    // Delete user logic (e.g., calling an API or dispatching an action)
+    // After success or failure, show appropriate toast message
+    showToast("User deleted successfully!", "success");
+  };
+
+  if (isLoading) {
+    return <div className="text-center py-10 text-xl">Loading users...</div>;
+  }
+
+  if (isError) {
+    return (
+      <div className="text-center py-10 text-xl text-red-500">
+        Error loading users.
       </div>
+    );
+  }
+
+  if (!data?.users) {
+    return <div className="text-center py-10 text-xl">No users found.</div>;
+  }
+
+  return (
+    <div className="px-6 py-8 bg-white shadow-lg rounded-lg max-w-4xl mx-auto">
+      <h1 className="text-3xl font-semibold text-center text-cyan-800 mb-6">
+        User Management
+      </h1>
+
+      <Table className="w-full">
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.users.map((user) => (
+            <TableRow key={user._id} className="hover:bg-gray-100">
+              <TableCell>{user.name}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.role}</TableCell>
+              <TableCell>
+                <Button
+                  variant="destructive"
+                  className="bg-red-600 hover:bg-red-700"
+                  onClick={() => handleDeleteUser(user._id)}
+                >
+                  Delete
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 };
