@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useCreateTeamMutation } from "@/store/api/teamApi";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const CreateTeam = () => {
   const [name, setName] = useState("");
@@ -12,30 +14,29 @@ const CreateTeam = () => {
       await createTeam(name).unwrap();
       toast.success("Team created successfully");
       setName("");
-    } catch (error) {
+    } catch {
       toast.error("Failed to create team");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <h2 className="text-xl font-semibold mb-4">Create a New Team</h2>
-      <form onSubmit={handleCreate} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Team Name"
+    <div className="max-w-sm mx-auto mt-10">
+      <h2 className="text-lg font-semibold mb-4">Create a Team</h2>
+      <form onSubmit={handleCreate} className="space-y-3">
+        <Input
+          placeholder="Team name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full border border-gray-300 rounded px-3 py-2"
           required
         />
-        <button
+        <Button
           type="submit"
+          variant="outline"
           disabled={isLoading}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="w-full"
         >
           {isLoading ? "Creating..." : "Create Team"}
-        </button>
+        </Button>
       </form>
     </div>
   );

@@ -45,7 +45,6 @@ const Navbar = () => {
           <Link to="/" className="cursor-pointer hover:underline">
             Home
           </Link>
-
           <Link to="/teams" className="cursor-pointer hover:underline">
             Team
           </Link>
@@ -81,16 +80,14 @@ const Navbar = () => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
+
                   <DropdownMenuItem>
                     <Link to="/admin/dashboard">Dashboard</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Link to="/profile">Profile</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    {" "}
-                    <Link to="/teams">Team</Link>{" "}
-                  </DropdownMenuItem>
+
                   <DropdownMenuItem>
                     {" "}
                     <Link to="/user-suggestion">Suggestions</Link>{" "}
@@ -123,36 +120,76 @@ const Navbar = () => {
             <Menu />
           </SheetTrigger>
           <SheetContent>
-            <div className="flex flex-col gap-4 mt-10 px-5">
-              <Link className="hover:underline">Features</Link>
-              <Link to={"/team"} className="hover:underline">
+            <div>
+              {" "}
+              {user ? (
+                <DropdownMenu>
+                  {/* <DropdownMenuTrigger>Open</DropdownMenuTrigger> */}
+                  <DropdownMenuTrigger>
+                    <Avatar className="cursor-pointer mt-20 ml-4">
+                      <AvatarImage src={user?.profile?.profilePhoto} />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+
+                    <DropdownMenuItem>
+                      <Link to="/admin/dashboard">Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link to="/profile">Profile</Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem>
+                      {" "}
+                      <Link to="/user-suggestion">Suggestions</Link>{" "}
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem onClick={logoutHandler}>
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <>
+                  {" "}
+                  <div className="flex flex-col gap-4 ">
+                    <Link to="/login" className="hover:underline">
+                      SignUp
+                    </Link>
+                    <Link to="/login" className="hover:underline">
+                      Login
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-4 px-5">
+              <Link to="/" className="cursor-pointer hover:underline">
+                Home
+              </Link>
+              <Link to="/teams" className="cursor-pointer hover:underline">
                 Team
               </Link>
+              <Link to="/document" className="cursor-pointer hover:underline">
+                Document
+              </Link>
+              <Link
+                to="/document/explore"
+                className="cursor-pointer hover:underline "
+              >
+                Explore
+              </Link>
+              <Link
+                to="/document/collab"
+                className="cursor-pointer hover:underline "
+              >
+                Collab
+              </Link>
               {/* <a href="#login">Login</a> */}
-              <div>
-                {" "}
-                {user ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>Open</DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
-                      <DropdownMenuItem>Billing</DropdownMenuItem>
-                      <DropdownMenuItem>Team</DropdownMenuItem>
-                      <DropdownMenuItem>Subscription</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <>
-                    {" "}
-                    <div className="flex flex-col gap-4 ">
-                      <Link className="hover:underline">SignUp</Link>
-                      <Link className="hover:underline">Login</Link>
-                    </div>
-                  </>
-                )}
-              </div>
             </div>
           </SheetContent>
         </Sheet>

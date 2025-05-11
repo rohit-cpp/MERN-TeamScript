@@ -86,8 +86,9 @@ const CollaborativeEditor = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex min-h-screen mt-18">
-        <div className="w-64 border-r border-gray-300 p-4">
+      <div className="flex flex-col md:flex-row min-h-screen mt-18">
+        {/* Sidebar */}
+        <div className="w-full md:w-64 border-r border-gray-300 p-4 md:block">
           <h3 className="font-semibold mb-2">Team Members</h3>
           {selectedTeam ? (
             <div className="space-y-2">
@@ -115,6 +116,7 @@ const CollaborativeEditor = () => {
           )}
         </div>
 
+        {/* Main Content */}
         <div className="flex-1 p-6">
           <div className="mb-4 max-w-sm">
             <Select onValueChange={setSelectedTeam}>
@@ -143,7 +145,7 @@ const CollaborativeEditor = () => {
                 incomingContent={content}
               />
 
-              <div className="flex gap-2 mt-4">
+              <div className="flex gap-2 mt-4 flex-wrap">
                 <Button variant="outline" onClick={downloadPlainText}>
                   Download as Plain Text
                 </Button>

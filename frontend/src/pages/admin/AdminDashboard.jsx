@@ -10,10 +10,7 @@ const navLinks = [
   { name: "Dashboard", path: "/admin/dashboard" },
   { name: "Documents", path: "/admin/dashboard/documents" },
   { name: "Users", path: "/admin/dashboard/users" },
-  // { name: "Suggestions", path: "/admin/dashboard/all" },
-  // { name: "AI", path: "/admin/dashboard/ai" },
   { name: "Recent Activities", path: "/admin/dashboard/recent" },
-  // { name: "Comments", path: "/admin/dashboard/comments" },
 ];
 
 const AdminDashboard = () => {
@@ -22,7 +19,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="flex">
+      <div className="flex flex-col md:flex-row min-h-screen">
         {/* Sidebar for desktop */}
         <aside className="hidden md:block w-[220px] bg-white border-r shadow-sm h-screen sticky top-0 p-6 mt-18">
           <h2 className="text-2xl font-bold text-cyan-700 mb-6">Admin Panel</h2>
@@ -43,8 +40,9 @@ const AdminDashboard = () => {
             ))}
           </div>
         </aside>
+
         {/* Mobile Sheet Menu */}
-        <div className="md:hidden fixed top-4 left-4 z-50">
+        <div className="md:hidden fixed top-25 left-4 z-50">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon">
@@ -53,7 +51,7 @@ const AdminDashboard = () => {
             </SheetTrigger>
             <SheetContent side="left" className="w-[220px] bg-white">
               <div className="mt-10">
-                <h2 className="text-lg font-bold text-cyan-700 mb-4">
+                <h2 className="text-2xl font-semibold text-cyan-700 mb-4 ml-3">
                   Admin Menu
                 </h2>
                 <div className="flex flex-col gap-3">
@@ -77,8 +75,8 @@ const AdminDashboard = () => {
           </Sheet>
         </div>
 
-        {/* {/* Main Content */}
-        <main className="flex-1 p-6 mt-16 md:mt-20 ">
+        {/* Main Content */}
+        <main className="flex-1 p-6 mt-16 md:mt-20">
           <Outlet /> {/* Render nested routes here */}
         </main>
       </div>

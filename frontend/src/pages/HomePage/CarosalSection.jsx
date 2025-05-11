@@ -1,7 +1,7 @@
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 
-const images = ["logo-un.jpeg", "logo.png", "logonew.png", "newlogo.png"];
+const images = ["2.jpg", "1n.jpg", "3.jpg", "4.jpg"];
 
 const CarosalSection = () => {
   const [sliderRef] = useKeenSlider({
@@ -19,11 +19,14 @@ const CarosalSection = () => {
         className="keen-slider rounded-xl overflow-hidden shadow-lg"
       >
         {images.map((src, index) => (
-          <div className="keen-slider__slide" key={index}>
+          <div
+            className="keen-slider__slide flex items-center justify-center h-[250px] md:h-[400px] relative"
+            key={index}
+          >
             <img
               src={src}
               alt={`Slide ${index + 1}`}
-              className="w-full h-64 md:h-50 object-cover"
+              className="w-full h-full object-cover object-top rounded-xl"
             />
           </div>
         ))}

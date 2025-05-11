@@ -1,6 +1,8 @@
 import { useAddMemberToTeamMutation } from "@/store/api/teamApi";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function AddMemberForm() {
   const [teamName, setTeamName] = useState("");
@@ -22,29 +24,28 @@ export default function AddMemberForm() {
   return (
     <form
       onSubmit={handleAdd}
-      className="space-y-4 p-4 border rounded max-w-md"
+      className="space-y-4 max-w-sm mx-auto mt-10 p-4 border rounded-md"
     >
-      <input
+      <Input
         placeholder="Team Name"
         value={teamName}
         onChange={(e) => setTeamName(e.target.value)}
         required
-        className="w-full p-2 border rounded"
       />
-      <input
+      <Input
         placeholder="User Name to Add"
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
         required
-        className="w-full p-2 border rounded"
       />
-      <button
+      <Button
         type="submit"
+        variant="outline"
         disabled={isLoading}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className="w-full"
       >
         {isLoading ? "Adding..." : "Add Member"}
-      </button>
+      </Button>
     </form>
   );
 }
