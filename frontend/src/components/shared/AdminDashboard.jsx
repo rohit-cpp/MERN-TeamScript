@@ -9,9 +9,10 @@ const AdminRoute = ({ children }) => {
   if (isLoading) return <div>Loading...</div>;
 
   const user = data?.user;
-  const isAdmin = user?.email === "adminDashboard@gmail.com";
+  const isAdmin = user?.email === import.meta.env.VITE_EMAIL;
 
   return isAdmin ? children : <Navigate to="/" />;
+  n;
 };
 
 export default AdminRoute;

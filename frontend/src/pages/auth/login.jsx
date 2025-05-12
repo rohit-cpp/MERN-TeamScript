@@ -2,29 +2,26 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  useLoadUserQuery,
   useLoginUserMutation,
   useRegisterUserMutation,
 } from "@/store/api/authApi";
+
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -62,7 +59,11 @@ const Login = () => {
       isSuccess: loginIsSuccess,
     },
   ] = useLoginUserMutation();
+
+  const { refetch: refetchUser } = useLoadUserQuery();
+
   const navigate = useNavigate();
+
   const changeInputHandler = (e, type) => {
     const { name, value } = e.target;
     if (type === "signup") {
@@ -75,28 +76,30 @@ const Login = () => {
   const handleRegistration = async (type) => {
     const inputData = type === "signup" ? signupInput : loginInput;
     const action = type === "signup" ? registerUser : loginUser;
-    await action(inputData);
+
+    try {
+      const res = await action(inputData).unwrap();
+      toast.success(
+        res?.message || `${type === "signup" ? "Signup" : "Login"} successful`
+      );
+
+      if (type === "login") {
+        await refetchUser();
+
+        if (res?.user?.email === "adminDashboard@gmail.com") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      toast.error(
+        err?.data?.message || `${type === "signup" ? "Signup" : "Login"} failed`
+      );
+    }
   };
-
-  useEffect(() => {
-    if (registerIsSuccess && registerData) {
-      toast.success(registerData?.message || "Signup successful");
-      navigate("/");
-    }
-    if (registerError) {
-      toast.error(registerError?.data?.message || "Signup failed");
-    }
-  }, [registerIsSuccess, registerData, registerError]);
-
-  useEffect(() => {
-    if (loginIsSuccess && loginData) {
-      toast.success(loginData?.message || "Login successful");
-      navigate("/");
-    }
-    if (loginError) {
-      toast.error(loginError?.data?.message || "Login failed");
-    }
-  }, [loginIsSuccess, loginData, loginError]);
 
   return (
     <div>
@@ -109,70 +112,57 @@ const Login = () => {
             <TabsTrigger value="signup">SignUp</TabsTrigger>
             <TabsTrigger value="login">Login</TabsTrigger>
           </TabsList>
+
+          {/* SignUp */}
           <TabsContent value="signup">
             <Card>
               <CardHeader>
                 <CardTitle className="text-5xl text-center font-bold text-orange-600">
                   SignUp
                 </CardTitle>
-                <CardDescription>
-                  {/* Create your new Account. Click SignUp when your done. */}
-                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="space-y-1">
-                  {/* <Label htmlFor="name">Name</Label> */}
-                  <Input
-                    type="text"
-                    name="name"
-                    value={signupInput.name}
-                    onChange={(e) => changeInputHandler(e, "signup")}
-                    placeholder="Enter your name"
-                    required="true"
-                  />
-                </div>
-                <div className="space-y-1">
-                  {/* <Label htmlFor="username">Email</Label> */}
-                  <Input
-                    type="email"
-                    name="email"
-                    value={signupInput.email}
-                    onChange={(e) => changeInputHandler(e, "signup")}
-                    placeholder="Enter your email"
-                    required="true"
-                  />
-                </div>
-                <div className="space-y-1">
-                  {/* <Label htmlFor="password">Password</Label> */}
-                  <Input
-                    type="password"
-                    name="password"
-                    value={signupInput.password}
-                    onChange={(e) => changeInputHandler(e, "signup")}
-                    placeholder="Enter your password"
-                    required="true"
-                  />
-                </div>
-                <div>
-                  <Select
-                    value={signupInput.role}
-                    onValueChange={(value) =>
-                      setSignupInput((prev) => ({ ...prev, role: value }))
-                    }
-                    required="true"
-                  >
-                    {/* <Label htmlFor="role">Select Your role</Label> */}
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="admin">admin</SelectItem>
-                        <SelectItem value="member">member</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <Input
+                  type="text"
+                  name="name"
+                  value={signupInput.name}
+                  onChange={(e) => changeInputHandler(e, "signup")}
+                  placeholder="Enter your name"
+                  required
+                />
+                <Input
+                  type="email"
+                  name="email"
+                  value={signupInput.email}
+                  onChange={(e) => changeInputHandler(e, "signup")}
+                  placeholder="Enter your email"
+                  required
+                />
+                <Input
+                  type="password"
+                  name="password"
+                  value={signupInput.password}
+                  onChange={(e) => changeInputHandler(e, "signup")}
+                  placeholder="Enter your password"
+                  required
+                />
+                <Select
+                  value={signupInput.role}
+                  onValueChange={(value) =>
+                    setSignupInput((prev) => ({ ...prev, role: value }))
+                  }
+                  required
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="admin">admin</SelectItem>
+                      <SelectItem value="member">member</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </CardContent>
               <CardFooter>
                 <Button
@@ -182,7 +172,7 @@ const Login = () => {
                 >
                   {registerIsLoading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin " />
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Please wait
                     </>
                   ) : (
@@ -192,58 +182,48 @@ const Login = () => {
               </CardFooter>
             </Card>
           </TabsContent>
+
+          {/* Login */}
           <TabsContent value="login">
             <Card>
               <CardHeader>
                 <CardTitle className="text-5xl font-bold text-center text-orange-600">
                   Login
                 </CardTitle>
-                <CardDescription>
-                  {/* Login your password here. After SignUp you will be LoggedIn */}
-                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="space-y-1">
-                  {/* <Label htmlFor="current">Email</Label> */}
-                  <Input
-                    type="email"
-                    name="email"
-                    value={loginInput.email}
-                    onChange={(e) => changeInputHandler(e, "login")}
-                    placeholder="Enter your email"
-                    required="true"
-                  />
-                </div>
-                <div className="space-y-1">
-                  {/* <Label htmlFor="new">Password</Label> */}
-                  <Input
-                    type="password"
-                    name="password"
-                    value={loginInput.password}
-                    onChange={(e) => changeInputHandler(e, "login")}
-                    placeholder="Enter your password"
-                    required="true"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Select
-                    value={loginInput.role}
-                    onValueChange={(value) =>
-                      setLoginInput((prev) => ({ ...prev, role: value }))
-                    }
-                  >
-                    {/* <Label htmlFor="role">Select Your role</Label> */}
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="admin">admin</SelectItem>
-                        <SelectItem value="member">member</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <Input
+                  type="email"
+                  name="email"
+                  value={loginInput.email}
+                  onChange={(e) => changeInputHandler(e, "login")}
+                  placeholder="Enter your email"
+                  required
+                />
+                <Input
+                  type="password"
+                  name="password"
+                  value={loginInput.password}
+                  onChange={(e) => changeInputHandler(e, "login")}
+                  placeholder="Enter your password"
+                  required
+                />
+                <Select
+                  value={loginInput.role}
+                  onValueChange={(value) =>
+                    setLoginInput((prev) => ({ ...prev, role: value }))
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="admin">admin</SelectItem>
+                      <SelectItem value="member">member</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </CardContent>
               <CardFooter>
                 <Button
@@ -268,4 +248,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;

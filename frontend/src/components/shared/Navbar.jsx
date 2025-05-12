@@ -17,7 +17,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 const Navbar = () => {
-  const { data, isLoading } = useLoadUserQuery();
+  const { data, isLoading, refetch } = useLoadUserQuery();
   const user = data?.user;
   const role = user?.role;
 
@@ -31,6 +31,7 @@ const Navbar = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(data?.message || "User is logged out");
+      refetch(); // ensure latest user data is fetched
       navigate("/login");
     }
   }, [isSuccess]);
