@@ -36,6 +36,7 @@ import UserSuggestionList from "./pages/suggestionPage/UserSuggestion";
 import CollaborativeEditor from "./pages/collaborativeEditor/CollaborativeEditor";
 import ProtectedRoute from "./components/shared/ProtectedRoutes";
 import AdminSuggestionManager from "./pages/suggestionPage/AdminSuggestion";
+import AdminRoute from "./components/shared/AdminDashboard";
 
 const appRouter = createBrowserRouter([
   {
@@ -153,10 +154,14 @@ const appRouter = createBrowserRouter([
   },
   {
     path: "/admin/dashboard",
-    element: <AdminDashboard />,
+    element: (
+      <AdminRoute>
+        <AdminDashboard />
+      </AdminRoute>
+    ),
     children: [
       {
-        path: "", // default landing content
+        path: "",
         element: (
           <div className="flex-1 p-6 mt-16 md:mt-1">
             <h1 className="text-5xl font-semibold text-gray-700">
@@ -172,7 +177,6 @@ const appRouter = createBrowserRouter([
         path: "documents",
         element: <AdminDocuments />,
       },
-
       {
         path: "users",
         element: <AdminUsers />,

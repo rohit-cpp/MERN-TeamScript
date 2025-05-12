@@ -18,10 +18,10 @@ import { toast } from "sonner";
 
 const Navbar = () => {
   const { data, isLoading } = useLoadUserQuery();
+  const user = data?.user;
+  const role = user?.role;
 
-  // const user = data;
-  const user = data && data?.user;
-  const [logoutUser, { data: logoutData, isSuccess }] = useLogoutUserMutation();
+  const [logoutUser, { isSuccess }] = useLogoutUserMutation();
   const navigate = useNavigate();
 
   const logoutHandler = async () => {
@@ -30,90 +30,88 @@ const Navbar = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(data.message || "User is logged out");
+      toast.success(data?.message || "User is logged out");
       navigate("/login");
     }
   }, [isSuccess]);
+
+  const memberLinks = [
+    { name: "Home", to: "/" },
+    { name: "Explore", to: "/document/explore" },
+    { name: "Collab", to: "/document/collab" },
+  ];
+
+  const allLinks = [
+    ...memberLinks,
+    { name: "Team", to: "/teams" },
+    { name: "Document", to: "/document" },
+  ];
+
+  const displayLinks = role === "member" ? memberLinks : allLinks;
+
   return (
     <div>
-      <nav className="flex justify-between items-center px-11 shadow-lg shadow-gray-300 fixed top-0 w-full z-20">
+      {/* Desktop Navbar */}
+      <nav className="flex justify-between items-center px-11 shadow-lg shadow-gray-300 fixed top-0 w-full z-20 bg-white">
         <div className="flex items-center justify-center mr-4 p-4">
           <img src="/public/logonew.png" alt="logo" className="w-10" />
           <h1 className="text-3xl font-bold text-orange-600">TeamScript</h1>
         </div>
-        <div className="hidden md:flex gap-6 items-center ">
-          <Link to="/" className="cursor-pointer hover:underline">
-            Home
-          </Link>
-          <Link to="/teams" className="cursor-pointer hover:underline">
-            Team
-          </Link>
-          <Link to="/document" className="cursor-pointer hover:underline">
-            Document
-          </Link>
-          <Link to="/document/explore" className="hover:underline ">
-            Explore
-          </Link>
-          <Link to="/document/collab" className="hover:underline ">
-            Collab
-          </Link>
-          {/* <Link
-            to={`/versions/${documentId}`}
-            className="cursor-pointer hover:underline"
-          >
-            Version
-          </Link> */}
-          {/* <a href="#login" className="hover:underline">
-          Login
-        </a> */}
-          <div>
-            {" "}
-            {user ? (
-              <DropdownMenu>
-                {/* <DropdownMenuTrigger>Open</DropdownMenuTrigger> */}
-                <DropdownMenuTrigger>
-                  <Avatar className="cursor-pointer">
-                    <AvatarImage src={user?.profile?.profilePhoto} />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
 
+        <div className="hidden md:flex gap-6 items-center">
+          {user &&
+            displayLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.to}
+                className="cursor-pointer hover:underline"
+              >
+                {link.name}
+              </Link>
+            ))}
+
+          {!user ? (
+            <div className="flex flex-row gap-6">
+              <Link to="/login" className="hover:underline">
+                SignUp
+              </Link>
+              <Link to="/login" className="hover:underline">
+                Login
+              </Link>
+            </div>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar className="cursor-pointer">
+                  <AvatarImage src={user?.profile?.profilePhoto} />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {user?.email === "adminDashboard@gmail.com" && (
                   <DropdownMenuItem>
                     <Link to="/admin/dashboard">Dashboard</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link to="/profile">Profile</Link>
-                  </DropdownMenuItem>
+                )}
 
-                  <DropdownMenuItem>
-                    {" "}
-                    <Link to="/user-suggestion">Suggestions</Link>{" "}
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem onClick={logoutHandler}>
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <>
-                {" "}
-                <div className="flex flex-row gap-6">
-                  <Link to="/login" className="hover:underline">
-                    SignUp
-                  </Link>
-                  <Link to="/login" className="hover:underline">
-                    Login
-                  </Link>
-                </div>
-              </>
-            )}
-          </div>
+                <DropdownMenuItem>
+                  <Link to="/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/user-suggestion">Suggestions</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={logoutHandler}>
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </nav>
+
+      {/* Mobile Navbar Sheet */}
       <nav className="fixed right-0 top-7 px-7 z-20">
         <Sheet>
           <SheetTrigger className="md:hidden">
@@ -121,10 +119,8 @@ const Navbar = () => {
           </SheetTrigger>
           <SheetContent>
             <div>
-              {" "}
               {user ? (
                 <DropdownMenu>
-                  {/* <DropdownMenuTrigger>Open</DropdownMenuTrigger> */}
                   <DropdownMenuTrigger>
                     <Avatar className="cursor-pointer mt-20 ml-4">
                       <AvatarImage src={user?.profile?.profilePhoto} />
@@ -134,63 +130,48 @@ const Navbar = () => {
                   <DropdownMenuContent>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
+                    {user?.email === "adminDashboard@gmail.com" && (
+                      <DropdownMenuItem>
+                        <Link to="/admin/dashboard">Dashboard</Link>
+                      </DropdownMenuItem>
+                    )}
 
-                    <DropdownMenuItem>
-                      <Link to="/admin/dashboard">Dashboard</Link>
-                    </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Link to="/profile">Profile</Link>
                     </DropdownMenuItem>
-
                     <DropdownMenuItem>
-                      {" "}
-                      <Link to="/user-suggestion">Suggestions</Link>{" "}
+                      <Link to="/user-suggestion">Suggestions</Link>
                     </DropdownMenuItem>
-
                     <DropdownMenuItem onClick={logoutHandler}>
                       Logout
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <>
-                  {" "}
-                  <div className="flex flex-col gap-4 ">
-                    <Link to="/login" className="hover:underline">
-                      SignUp
-                    </Link>
-                    <Link to="/login" className="hover:underline">
-                      Login
-                    </Link>
-                  </div>
-                </>
+                <div className="flex flex-col gap-4 mt-20 ml-4">
+                  <Link to="/login" className="hover:underline">
+                    SignUp
+                  </Link>
+                  <Link to="/login" className="hover:underline">
+                    Login
+                  </Link>
+                </div>
               )}
             </div>
 
-            <div className="flex flex-col gap-4 px-5">
-              <Link to="/" className="cursor-pointer hover:underline">
-                Home
-              </Link>
-              <Link to="/teams" className="cursor-pointer hover:underline">
-                Team
-              </Link>
-              <Link to="/document" className="cursor-pointer hover:underline">
-                Document
-              </Link>
-              <Link
-                to="/document/explore"
-                className="cursor-pointer hover:underline "
-              >
-                Explore
-              </Link>
-              <Link
-                to="/document/collab"
-                className="cursor-pointer hover:underline "
-              >
-                Collab
-              </Link>
-              {/* <a href="#login">Login</a> */}
-            </div>
+            {user && (
+              <div className="flex flex-col gap-4 px-5 mt-6">
+                {displayLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    to={link.to}
+                    className="cursor-pointer hover:underline"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            )}
           </SheetContent>
         </Sheet>
       </nav>
