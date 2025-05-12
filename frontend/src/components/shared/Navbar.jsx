@@ -55,7 +55,7 @@ const Navbar = () => {
       {/* Desktop Navbar */}
       <nav className="flex justify-between items-center px-11 shadow-lg shadow-gray-300 fixed top-0 w-full z-20 bg-white">
         <div className="flex items-center justify-center mr-4 p-4">
-          <img src="/public/logonew.png" alt="logo" className="w-10" />
+          <img src="/logonew.png" alt="logo" className="w-10" />
           <h1 className="text-3xl font-bold text-orange-600">TeamScript</h1>
         </div>
 
