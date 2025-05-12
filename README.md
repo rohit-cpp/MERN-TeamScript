@@ -76,7 +76,8 @@ Empower teams to create, edit, manage documents together — with real-time coll
 
 ### Prerequisites
 
-- Node.js (v18+)
+- React js
+- Node.js 
 - MongoDB
 - Gemini API Key
 
