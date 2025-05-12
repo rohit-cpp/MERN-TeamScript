@@ -88,14 +88,20 @@ Empower teams to create, edit, manage documents together — with real-time coll
 You’ll need a Gemini API key from Google AI Studio.
 Paste it in your backend .env under GEMINI_API_KEY
 
+---
 
 ## 🧪 Demo Accounts
 
 Admin: bhushan@gamil.com / password-bhushan
+
 User: rohit@example.com / password-rohit
+
+---
 
 👨‍💻 Author
 Built by Rohit Gawande
+
+---
 
 🙌 Acknowledgements
 ShadCN/UI
@@ -108,6 +114,7 @@ Socket.IO
 
 RTK Query
 
+---
 
 ## 📸 ScreenShots
 ![Screenshot 2025-05-04 134301](https://github.com/user-attachments/assets/ed751121-4de3-4b9c-846a-0766069bbb3c)
@@ -116,7 +123,7 @@ RTK Query
 ![Screenshot 2025-05-06 172330](https://github.com/user-attachments/assets/ddf9ab61-9293-4d9a-99d5-3638ae28d12f)
 ![Screenshot 2025-05-11 161956](https://github.com/user-attachments/assets/7f3f016b-b396-4a6e-a643-d8a1916917a6)
 
-
+---
 
 ### 🔧 Installation
 
