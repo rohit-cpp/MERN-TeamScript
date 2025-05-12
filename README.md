@@ -88,7 +88,9 @@ Empower teams to create, edit, manage documents together — with real-time coll
 You’ll need a Gemini API key from Google AI Studio.
 Paste it in your backend .env under GEMINI_API_KEY
 
-🧪 Demo Accounts
+
+## 🧪 Demo Accounts
+
 Admin: bhushan@gamil.com / password-bhushan
 User: rohit@example.com / password-rohit
 
