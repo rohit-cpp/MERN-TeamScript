@@ -1,4 +1,4 @@
-# 🚀 TeamScript
+# 🚀 TeamScript AI-powered collaborative team workspace.
 
 A modern, AI-powered collaborative team workspace built using the MERN Stack.  
 Empower teams to create, edit, manage documents together — with real-time collaboration, smart AI tools, and intuitive dashboards.
