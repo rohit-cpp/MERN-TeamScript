@@ -16,7 +16,7 @@ import { useGetMyTeamsQuery } from "@/store/api/teamApi";
 import { useSelector } from "react-redux";
 import RichTextEditor from "@/components/shared/Editor";
 
-const socket = io("http://localhost:8000");
+const socket = io(import.meta.env.VITE_BACKEND_URL);
 
 const CollaborativeEditor = () => {
   const { id: docId } = useParams();

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/shared/Navbar";
 
 const links = [
-  { name: "Overview", to: "/teams", icon: Home },
+  { name: "Overview", to: "/teams/teams", icon: Home },
   { name: "Create Team", to: "/teams/create", icon: PlusCircle },
   { name: "My Teams", to: "/teams/my-teams", icon: Users },
   { name: "Add Member", to: "/teams/add-member", icon: UserPlus },

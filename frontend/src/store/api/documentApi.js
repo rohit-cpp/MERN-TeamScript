@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const DOCUMENT_API = "http://localhost:8000/api/document/";
+const DOCUMENT_API = `${import.meta.env.VITE_BACKEND_URL}/api/document/`;
 
 export const documentApi = createApi({
   reducerPath: "documentApi",

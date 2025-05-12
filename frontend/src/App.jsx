@@ -10,7 +10,7 @@ import AdminAi from "./pages/admin/AdminAi";
 import AdminRecent from "./pages/admin/AdminRecent";
 import AdminComment from "./pages/admin/AdminComment";
 import Profile from "./pages/profilePage/Profile";
-import TeamPage from "./pages/teamPage/team";
+
 import TeamDetails from "./pages/teamPage/AllTeamDetails";
 import CreateTeam from "./pages/teamPage/CreateTeamFormSection";
 import MyTeams from "./pages/teamPage/AllTeamDetails";
@@ -37,6 +37,7 @@ import CollaborativeEditor from "./pages/collaborativeEditor/CollaborativeEditor
 import ProtectedRoute from "./components/shared/ProtectedRoutes";
 import AdminSuggestionManager from "./pages/suggestionPage/AdminSuggestion";
 import AdminRoute from "./components/shared/AdminDashboard";
+import TeamPage from "./pages/teamPage/Team";
 
 const appRouter = createBrowserRouter([
   {
@@ -104,7 +105,7 @@ const appRouter = createBrowserRouter([
     element: <TeamDashboardLayout />,
     children: [
       {
-        path: "",
+        path: "teams",
         element: <TeamPage />,
       },
       {

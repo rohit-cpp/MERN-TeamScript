@@ -1,7 +1,7 @@
 // store/api/teamApi.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const TEAM_API = "http://localhost:8000/api/team/";
+const TEAM_API = `${import.meta.env.VITE_BACKEND_URL}/api/team/`;
 
 export const teamApi = createApi({
   reducerPath: "teamApi",

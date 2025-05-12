@@ -5,7 +5,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-const socket = io("http://localhost:8000", { withCredentials: true });
+const socket = io(import.meta.env.VITE_BACKEND_URL, {
+  withCredentials: true,
+});
 
 export default function LiveTimeline() {
   const [activities, setActivities] = useState([]);

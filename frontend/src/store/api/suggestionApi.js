@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const suggestionApi = createApi({
   reducerPath: "suggestionApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/api/suggestion/",
+    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/suggestion/`,
     credentials: "include",
   }),
   tagTypes: ["Suggestion"],

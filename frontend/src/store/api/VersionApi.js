@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const versionApi = createApi({
   reducerPath: "versionApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/api/version/",
+    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/api/version/`,
     credentials: "include",
   }),
   tagTypes: ["Version"],
