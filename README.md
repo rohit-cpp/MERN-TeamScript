@@ -83,9 +83,9 @@ Empower teams to create, edit, manage documents together — with real-time coll
 
 ---
 
-⚡ AI Features Powered by Gemini
-You’ll need a Gemini API key from Google AI Studio.
+## ⚡ AI Features Powered by Gemini
 
+You’ll need a Gemini API key from Google AI Studio.
 Paste it in your backend .env under GEMINI_API_KEY
 
 🧪 Demo Accounts
