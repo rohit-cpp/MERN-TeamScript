@@ -117,7 +117,6 @@ RTK Query
 ---
 
 ## 📸 ScreenShots
-![Screenshot 2025-05-04 134301](https://github.com/user-attachments/assets/ed751121-4de3-4b9c-846a-0766069bbb3c)
 ![Screenshot 2025-05-08 182924](https://github.com/user-attachments/assets/cd6b2852-46c2-41ff-854f-19cf0f633c3e)
 ![Screenshot 2025-05-08 161812](https://github.com/user-attachments/assets/13531d01-f287-45f9-92de-4f63cdaf01b2)
 ![Screenshot 2025-05-06 172330](https://github.com/user-attachments/assets/ddf9ab61-9293-4d9a-99d5-3638ae28d12f)
