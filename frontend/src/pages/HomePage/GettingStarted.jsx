@@ -31,7 +31,7 @@ export default function GettingStarted() {
         </Button>
       </DrawerTrigger>
 
-      <DrawerContent className="max-h-[90vh] overflow-y-auto px-6 py-6 max-w-xl mx-auto rounded-t-lg">
+      <DrawerContent className="h-[90vh] max-w-xl mx-auto rounded-t-lg flex flex-col">
         <DrawerHeader>
           <DrawerTitle className="text-4xl font-bold text-orange-600">
             Get Started with TeamScript
@@ -41,7 +41,7 @@ export default function GettingStarted() {
           </DrawerDescription>
         </DrawerHeader>
 
-        <div className="space-y-6 mt-4">
+        <div className="overflow-y-auto px-6 pb-6 flex-1 space-y-6">
           {/* Step 1 */}
           <div className="flex gap-4 items-start">
             <UserPlus className="text-cyan-600 w-6 h-6 mt-1" />

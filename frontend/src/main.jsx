@@ -12,7 +12,7 @@ const Custom = ({ children }) => {
   return (
     <>
       {isLoading ? (
-        <h1 className="text-8xl text-center mt-30 font-medium text-cyan-800">
+        <h1 className="text-5xl text-center mt-30 font-medium text-cyan-800">
           Loading... Please wait
         </h1>
       ) : (

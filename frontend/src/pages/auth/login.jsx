@@ -40,28 +40,10 @@ const Login = () => {
     role: "",
   });
 
-  const [
-    registerUser,
-    {
-      data: registerData,
-      error: registerError,
-      isLoading: registerIsLoading,
-      isSuccess: registerIsSuccess,
-    },
-  ] = useRegisterUserMutation();
-
-  const [
-    loginUser,
-    {
-      data: loginData,
-      error: loginError,
-      isLoading: loginIsLoading,
-      isSuccess: loginIsSuccess,
-    },
-  ] = useLoginUserMutation();
-
+  const [registerUser, { isLoading: isRegistering }] =
+    useRegisterUserMutation();
+  const [loginUser, { isLoading: isLoggingIn }] = useLoginUserMutation();
   const { refetch: refetchUser } = useLoadUserQuery();
-
   const navigate = useNavigate();
 
   const changeInputHandler = (e, type) => {
@@ -73,178 +55,166 @@ const Login = () => {
     }
   };
 
-  const handleRegistration = async (type) => {
-    const inputData = type === "signup" ? signupInput : loginInput;
+  const handleAuth = async (type) => {
+    const input = type === "signup" ? signupInput : loginInput;
     const action = type === "signup" ? registerUser : loginUser;
 
     try {
-      const res = await action(inputData).unwrap();
-      toast.success(
-        res?.message || `${type === "signup" ? "Signup" : "Login"} successful`
-      );
+      const res = await action(input).unwrap();
+      toast.success(res?.message || `${type} successful`);
+      await refetchUser();
 
-      if (type === "login") {
-        await refetchUser();
-
-        if (res?.user?.email === "adminDashboard@gmail.com") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/");
-        }
+      if (res?.user?.email === "adminDashboard@gmail.com") {
+        navigate("/admin/dashboard");
       } else {
         navigate("/");
       }
     } catch (err) {
-      toast.error(
-        err?.data?.message || `${type === "signup" ? "Signup" : "Login"} failed`
-      );
+      toast.error(err?.data?.message || `${type} failed`);
     }
   };
 
   return (
-    <div>
-      <div className="text-center text-4xl text-yellow-700 py-8">
-        <span className="text-8xl text-cyan-700 font-bold">TeamScript</span>
+    <div className="min-h-screen flex flex-col justify-center items-center px-4">
+      <div className="text-center mb-8">
+        <h1 className="text-6xl font-extrabold text-cyan-700 tracking-tight">
+          TeamScript
+        </h1>
+        <p className="text-muted-foreground text-sm mt-1">
+          Empowering teams to collaborate smarter
+        </p>
       </div>
-      <div className="flex items-center w-full justify-center">
-        <Tabs defaultValue="account" className="w-[400px]">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signup">SignUp</TabsTrigger>
-            <TabsTrigger value="login">Login</TabsTrigger>
-          </TabsList>
 
-          {/* SignUp */}
-          <TabsContent value="signup">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-5xl text-center font-bold text-orange-600">
-                  SignUp
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Input
-                  type="text"
-                  name="name"
-                  value={signupInput.name}
-                  onChange={(e) => changeInputHandler(e, "signup")}
-                  placeholder="Enter your name"
-                  required
-                />
-                <Input
-                  type="email"
-                  name="email"
-                  value={signupInput.email}
-                  onChange={(e) => changeInputHandler(e, "signup")}
-                  placeholder="Enter your email"
-                  required
-                />
-                <Input
-                  type="password"
-                  name="password"
-                  value={signupInput.password}
-                  onChange={(e) => changeInputHandler(e, "signup")}
-                  placeholder="Enter your password"
-                  required
-                />
-                <Select
-                  value={signupInput.role}
-                  onValueChange={(value) =>
-                    setSignupInput((prev) => ({ ...prev, role: value }))
-                  }
-                  required
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="admin">admin</SelectItem>
-                      <SelectItem value="member">member</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </CardContent>
-              <CardFooter>
-                <Button
-                  disabled={registerIsLoading}
-                  onClick={() => handleRegistration("signup")}
-                  className="w-full bg-orange-600 cursor-pointer"
-                >
-                  {registerIsLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Please wait
-                    </>
-                  ) : (
-                    "Signup"
-                  )}
-                </Button>
-              </CardFooter>
-            </Card>
-          </TabsContent>
+      <Tabs defaultValue="signup" className="w-full max-w-md">
+        <TabsList className="grid grid-cols-2 w-full">
+          <TabsTrigger value="signup">Sign Up</TabsTrigger>
+          <TabsTrigger value="login">Login</TabsTrigger>
+        </TabsList>
 
-          {/* Login */}
-          <TabsContent value="login">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-5xl font-bold text-center text-orange-600">
-                  Login
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Input
-                  type="email"
-                  name="email"
-                  value={loginInput.email}
-                  onChange={(e) => changeInputHandler(e, "login")}
-                  placeholder="Enter your email"
-                  required
-                />
-                <Input
-                  type="password"
-                  name="password"
-                  value={loginInput.password}
-                  onChange={(e) => changeInputHandler(e, "login")}
-                  placeholder="Enter your password"
-                  required
-                />
-                <Select
-                  value={loginInput.role}
-                  onValueChange={(value) =>
-                    setLoginInput((prev) => ({ ...prev, role: value }))
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="admin">admin</SelectItem>
-                      <SelectItem value="member">member</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </CardContent>
-              <CardFooter>
-                <Button
-                  disabled={loginIsLoading}
-                  onClick={() => handleRegistration("login")}
-                  className="bg-orange-600 w-full cursor-pointer"
-                >
-                  {loginIsLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Please wait
-                    </>
-                  ) : (
-                    "Login"
-                  )}
-                </Button>
-              </CardFooter>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+        {/* Sign Up Tab */}
+        <TabsContent value="signup">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl text-center text-orange-600 font-bold">
+                Create Account
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Input
+                name="name"
+                placeholder="Name"
+                value={signupInput.name}
+                onChange={(e) => changeInputHandler(e, "signup")}
+              />
+              <Input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={signupInput.email}
+                onChange={(e) => changeInputHandler(e, "signup")}
+              />
+              <Input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={signupInput.password}
+                onChange={(e) => changeInputHandler(e, "signup")}
+              />
+              <Select
+                value={signupInput.role}
+                onValueChange={(val) =>
+                  setSignupInput((prev) => ({ ...prev, role: val }))
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="member">Member</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </CardContent>
+            <CardFooter>
+              <Button
+                className="w-full bg-orange-600 hover:bg-orange-700"
+                disabled={isRegistering}
+                onClick={() => handleAuth("signup")}
+              >
+                {isRegistering ? (
+                  <>
+                    <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                    Please wait...
+                  </>
+                ) : (
+                  "Sign Up"
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+
+        {/* Login Tab */}
+        <TabsContent value="login">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl text-center text-orange-600 font-bold">
+                Welcome Back
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Input
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={loginInput.email}
+                onChange={(e) => changeInputHandler(e, "login")}
+              />
+              <Input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={loginInput.password}
+                onChange={(e) => changeInputHandler(e, "login")}
+              />
+              <Select
+                value={loginInput.role}
+                onValueChange={(val) =>
+                  setLoginInput((prev) => ({ ...prev, role: val }))
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="member">Member</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </CardContent>
+            <CardFooter>
+              <Button
+                className="w-full bg-orange-600 hover:bg-orange-700"
+                disabled={isLoggingIn}
+                onClick={() => handleAuth("login")}
+              >
+                {isLoggingIn ? (
+                  <>
+                    <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                    Logging in...
+                  </>
+                ) : (
+                  "Login"
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
