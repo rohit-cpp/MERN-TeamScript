@@ -7,9 +7,9 @@ Empower teams to create, edit, manage documents together — with real-time coll
 
 ---
 
-## 📸 Preview
+## 📸 live link
 
-> ![Teamscript Dashboard](./preview.png)
+[teamscript.onrender.com](https://teamscript.onrender.com/)
 
 ---
 
