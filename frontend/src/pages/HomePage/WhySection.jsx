@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const features = [
@@ -23,34 +24,64 @@ const features = [
   },
 ];
 
+const containerVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
 const WhySection = () => {
   return (
     <section className="py-20 my-14 px-4 md:px-8 lg:px-16 bg-muted">
       <div className="text-center mb-10">
-        <h2 className="text-5xl font-bold text-orange-600">
+        <motion.h2
+          className="text-5xl font-bold text-orange-600"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
           Why Choose TeamScript?
-        </h2>
-        <p className="text-gray-600 mt-2 text-lg max-w-2xl mx-auto">
+        </motion.h2>
+        <motion.p
+          className="text-gray-600 mt-2 text-lg max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           Built for teams who need structure, speed, and smart collaboration.
-        </p>
+        </motion.p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         {features.map((feature, index) => (
-          <Card
-            key={index}
-            className="bg-white shadow-md transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105"
-          >
-            <CardHeader>
-              <CardTitle className="text-2xl text-cyan-700 ">
-                {feature.title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 text-lg">{feature.description}</p>
-            </CardContent>
-          </Card>
+          <motion.div key={index} variants={cardVariants}>
+            <Card className="bg-white shadow-md transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105">
+              <CardHeader>
+                <CardTitle className="text-2xl text-cyan-700">
+                  {feature.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700 text-lg">{feature.description}</p>
+              </CardContent>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 };

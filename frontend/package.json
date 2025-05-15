@@ -46,6 +46,7 @@
     "dompurify": "^3.2.5",
     "embla-carousel-react": "^8.6.0",
     "format": "^0.2.2",
+    "framer-motion": "^12.11.3",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.10.3",
     "jspdf": "^3.0.1",
