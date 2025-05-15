@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { toast } from "sonner";
-
 import { useSubmitFeedbackMutation } from "@/store/api/feedbackApi";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -44,9 +43,11 @@ const FeedbackForm = () => {
   return (
     <div>
       <Navbar />
-      <div className="max-w-xl mx-auto py-14 mt-10">
-        <h2 className="text-5xl font-bold mb-6 text-center">Submit Feedback</h2>
-        <form onSubmit={submitHandler} className="space-y-4">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-14 mt-10">
+        <h2 className="text-3xl sm:text-5xl font-bold mb-6 text-center">
+          Submit Feedback
+        </h2>
+        <form onSubmit={submitHandler} className="space-y-6">
           <div>
             <Label className="py-1">Name</Label>
             <Input
@@ -74,13 +75,13 @@ const FeedbackForm = () => {
             <textarea
               name="feedback"
               placeholder="Your Feedback"
-              className="w-full border p-2 rounded-sm resize-none"
+              className="w-full border p-2 rounded-sm resize-none h-32"
               value={form.feedback}
               onChange={handleChange}
               required
             />
           </div>
-          <div className="text-center text-3xl font-semibold">
+          <div className="text-center text-xl sm:text-2xl font-semibold">
             <label className="mr-2">Rating:</label>
             {[1, 2, 3, 4, 5].map((num) => (
               <span
@@ -95,7 +96,7 @@ const FeedbackForm = () => {
             ))}
           </div>
           <div className="text-center">
-            <Button type="submit" className="w-60" disabled={loading}>
+            <Button type="submit" className="w-full sm:w-60" disabled={loading}>
               {loading ? "Submitting..." : "Submit"}
             </Button>
           </div>
