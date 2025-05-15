@@ -6,6 +6,7 @@ import { teamApi } from "./api/teamApi";
 import { documentApi } from "./api/documentApi";
 import { versionApi } from "./api/VersionApi";
 import { suggestionApi } from "./api/suggestionApi";
+import { feedbackApi } from "./api/feedbackApi";
 const store = configureStore({
   reducer: rootReducer,
   middleware: (defaultMiddleware) =>
@@ -14,7 +15,8 @@ const store = configureStore({
       teamApi.middleware,
       documentApi.middleware,
       versionApi.middleware,
-      suggestionApi.middleware
+      suggestionApi.middleware,
+      feedbackApi.middleware
     ),
 });
 export default store;

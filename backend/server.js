@@ -13,6 +13,7 @@ import documentRoute from "./routes/document.route.js";
 import versionRoute from "./routes/version.route.js";
 import suggestionRoute from "./routes/suggestion.route.js";
 import commentRoute from "./routes/comment.route.js";
+import feedbackRoute from "./routes/feedback.route.js";
 
 dotenv.config();
 
@@ -54,6 +55,7 @@ app.use("/api/document", documentRoute);
 app.use("/api/version", versionRoute);
 app.use("/api/suggestion", suggestionRoute);
 app.use("/api/comment", commentRoute);
+app.use("/api/feedback", feedbackRoute);
 
 // WebSocket logic
 const activeUsers = {}; // { docId: { socketId: { username, profilePhoto, teamId, active: boolean } } }

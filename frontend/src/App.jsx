@@ -38,6 +38,8 @@ import ProtectedRoute from "./components/shared/ProtectedRoutes";
 import AdminSuggestionManager from "./pages/suggestionPage/AdminSuggestion";
 import AdminRoute from "./components/shared/AdminDashboard";
 import TeamPage from "./pages/teamPage/Team";
+import AdminFeedbackTable from "./pages/admin/AdminFeedbackTable";
+import FeedbackForm from "./pages/feedback/Feedback";
 
 const appRouter = createBrowserRouter([
   {
@@ -51,6 +53,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/document/user-feedback",
+    element: <FeedbackForm />,
   },
   {
     path: "/document/explore",
@@ -197,6 +203,10 @@ const appRouter = createBrowserRouter([
       {
         path: "comments",
         element: <AdminComment />,
+      },
+      {
+        path: "feedback",
+        element: <AdminFeedbackTable />,
       },
     ],
   },

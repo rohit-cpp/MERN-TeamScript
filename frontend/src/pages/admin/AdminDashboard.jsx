@@ -11,6 +11,7 @@ const navLinks = [
   { name: "Documents", path: "/admin/dashboard/documents" },
   { name: "Users", path: "/admin/dashboard/users" },
   { name: "Recent Activities", path: "/admin/dashboard/recent" },
+  { name: "Users Feedback", path: "/admin/dashboard/feedback" },
 ];
 
 const AdminDashboard = () => {

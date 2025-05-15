@@ -5,6 +5,7 @@ import { teamApi } from "./api/teamApi";
 import { documentApi } from "./api/documentApi";
 import { versionApi } from "./api/VersionApi";
 import { suggestionApi } from "./api/suggestionApi";
+import { feedbackApi } from "./api/feedbackApi";
 const rootReducer = combineReducers({
   auth: authReducer,
   [authApi.reducerPath]: authApi.reducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   [documentApi.reducerPath]: documentApi.reducer,
   [versionApi.reducerPath]: versionApi.reducer,
   [suggestionApi.reducerPath]: suggestionApi.reducer,
+  [feedbackApi.reducerPath]: feedbackApi.reducer,
 });
 
 export default rootReducer;

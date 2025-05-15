@@ -40,12 +40,14 @@ const Navbar = () => {
     { name: "Home", to: "/" },
     { name: "Explore", to: "/document/explore" },
     { name: "Collab", to: "/document/collab" },
+    { name: "Feedback", to: "/document/user-feedback" },
   ];
 
   const allLinks = [
     ...memberLinks,
     { name: "Team", to: "/teams" },
     { name: "Document", to: "/document" },
+    // { name: "Feedback", to: "user-feedback" },
   ];
 
   const displayLinks = role === "member" ? memberLinks : allLinks;
@@ -92,9 +94,11 @@ const Navbar = () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {user?.email === "adminDashboard@gmail.com" && (
-                  <DropdownMenuItem>
-                    <Link to="/admin/dashboard">Dashboard</Link>
-                  </DropdownMenuItem>
+                  <>
+                    <DropdownMenuItem>
+                      <Link to="/admin/dashboard">Dashboard</Link>
+                    </DropdownMenuItem>
+                  </>
                 )}
 
                 <DropdownMenuItem>
