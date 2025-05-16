@@ -21,7 +21,7 @@ dotenv.config();
 // Create Express app
 const app = express();
 
-const url = `https://render-hosting-se2b.onrender.com`;
+const url = `https://teamscript.onrender.com/`;
 const interval = 30000;
 
 function reloadWebsite() {
