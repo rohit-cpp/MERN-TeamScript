@@ -14,11 +14,28 @@ import versionRoute from "./routes/version.route.js";
 import suggestionRoute from "./routes/suggestion.route.js";
 import commentRoute from "./routes/comment.route.js";
 import feedbackRoute from "./routes/feedback.route.js";
+import axios from "axios";
 
 dotenv.config();
 
 // Create Express app
 const app = express();
+
+const url = `https://render-hosting-se2b.onrender.com`;
+const interval = 30000;
+
+function reloadWebsite() {
+  axios
+    .get(url)
+    .then((response) => {
+      console.log("website reloded");
+    })
+    .catch((error) => {
+      console.error(`Error : ${error.message}`);
+    });
+}
+
+setInterval(reloadWebsite, interval);
 
 // Create HTTP server and bind Socket.IO
 const server = http.createServer(app);
