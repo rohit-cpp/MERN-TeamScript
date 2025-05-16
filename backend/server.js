@@ -20,6 +20,22 @@ dotenv.config();
 // Create Express app
 const app = express();
 
+const url = `https://teamscript.onrender.com/`;
+const interval = 30000;
+
+function reloadWebsite() {
+  axios
+    .get(url)
+    .then((response) => {
+      console.log("website reloded");
+    })
+    .catch((error) => {
+      console.error(`Error : ${error.message}`);
+    });
+}
+
+setInterval(reloadWebsite, interval);
+
 // Create HTTP server and bind Socket.IO
 const server = http.createServer(app);
 const io = new Server(server, {
