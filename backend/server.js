@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import http from "http";
 import { Server } from "socket.io";
 import connectDB from "./utils/db.js";
+import axios from "axios";
 
 // Route Imports
 import userRoute from "./routes/user.route.js";
